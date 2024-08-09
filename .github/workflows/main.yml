@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - master
-
+      
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,17 +20,28 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '17'
-        distribution: 'temurin'  # Puedes usar 'temurin', 'zulu', etc.
+        distribution: 'temurin'
 
     - name: Set executable permissions
       run: chmod +x ./gradlew
 
-    - name: Escape and set environment variables
+    - name: Install Android SDK
       run: |
-        USERNAME_ESCAPED=$(echo ${{ secrets.USERNAME_PROD }} | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
-        PASSWORD_ESCAPED=$(echo ${{ secrets.PASSWORD_PROD }} | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
-        echo "USERNAME_PROD=${USERNAME_ESCAPED}" >> $GITHUB_ENV
-        echo "PASSWORD_PROD=${PASSWORD_ESCAPED}" >> $GITHUB_ENV
+        sudo apt-get update
+        sudo apt-get install -y wget unzip
+        mkdir -p $HOME/android-sdk/cmdline-tools
+        wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O commandlinetools.zip
+        unzip commandlinetools.zip -d $HOME/android-sdk/cmdline-tools
+        mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
+        export ANDROID_SDK_ROOT=$HOME/android-sdk
+        export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+        yes | sdkmanager --licenses
+        sdkmanager "build-tools;30.0.3" "platforms;android-30"
+
+    - name: Set up environment variables
+      run: |
+        echo "USERNAME_PROD=${{ secrets.USERNAME_PROD }}" >> $GITHUB_ENV
+        echo "PASSWORD_PROD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
 
     - name: Install dependencies
       run: ./gradlew dependencies
