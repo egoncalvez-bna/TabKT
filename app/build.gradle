@@ -23,8 +23,11 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "USERNAME", "\"usuarioDesarrollo\""
-            buildConfigField "String", "PASSWORD", "\"contraseñaDesarrollo\""
+            /*buildConfigField "String", "USERNAME", "\"usuarioDesarrollo\""
+            buildConfigField "String", "PASSWORD", "\"contraseñaDesarrollo\""*/
+            buildConfigField "String", "USERNAME", "\"${System.getenv('USERNAME_PROD')}\""
+            buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD_PROD')}\""
+
         }
         release {
             buildConfigField "String", "USERNAME", "\"${System.getenv('USERNAME_PROD')}\""

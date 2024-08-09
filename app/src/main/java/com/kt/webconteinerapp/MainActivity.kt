@@ -44,9 +44,17 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         // Verificar si el permiso ya ha sido concedido
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             // Si el permiso no está concedido, solicitarlo
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_REQUEST_CODE
+            )
         }
 
 
@@ -86,16 +94,17 @@ class MainActivity : AppCompatActivity() {
 
         // Prueba de implementación de BNA cripto:
         val crypto = CryptoProvider.getProvider().simCrypto
-        val pass = when (ambiente) {
-            "Producción" -> ""
-            "Testing" -> "+GFwS5Wg1Q54A1kyEONCpg=="
-            "Desarrollo" -> "ep+OHJBHisF4A1kyEONCpg=="
+        /*   val pass = when (ambiente) {
+               "Producción" -> ""
+               "Testing" -> "+GFwS5Wg1Q54A1kyEONCpg=="
+               "Desarrollo" -> "ep+OHJBHisF4A1kyEONCpg=="
 
-            else -> {
-                "ERROR"
-            }
-        }
-        val password = BuildConfig.PASSWORD
+               else -> {
+                   "ERROR"
+               }
+           }
+           {}*/
+        val pass = BuildConfig.PASSWORD
 
         myWebView.setWebViewClient(object : MyWebViewClient(progressBar) {
             override fun onReceivedHttpAuthRequest(
@@ -113,8 +122,18 @@ class MainActivity : AppCompatActivity() {
                         "CC\\H00097"
                     }
                 }
-                val password = crypto.desencriptar(pass)
-                handler.proceed(username, password)
+                if (pass == "null") {
+                    // Crear Intent para iniciar SecondActivity
+                    val intent = Intent(this@MainActivity, ErroresActivity::class.java)
+                    // Agregar el texto como un
+                    intent.putExtra("EXTRA_TEXT", "Error: la contraseña es nula")
+                    // Iniciar SecondActivity
+                    startActivity(intent)
+                } else {
+                    //val password = crypto.desencriptar(pass)
+                    val password = crypto.desencriptar(pass)
+                    handler.proceed(username, password)
+                }
             }
         })
 
@@ -131,6 +150,7 @@ class MainActivity : AppCompatActivity() {
             hideSystemUI()
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun configureSslOld(webView: WebView) {
         try {
@@ -166,10 +186,10 @@ class MainActivity : AppCompatActivity() {
             Log.e("SSLConfig", "Error configuring SSL", e)
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun configureSsl(webView: WebView) {
-        try
-        {
+        try {
             // Crear un CertificateFactory para X.509
             val cf = CertificateFactory.getInstance("X.509")
 
@@ -271,6 +291,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
         override fun onReceivedSslError(
             view: WebView?,
             handler: SslErrorHandler?,
