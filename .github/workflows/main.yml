@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '17'
-        distribution: 'temurin'  # Puedes usar 'temurin', 'zulu', etc.
+        distribution: 'temurin'
 
     - name: Set executable permissions
       run: chmod +x ./gradlew
@@ -32,6 +32,9 @@ jobs:
         echo "USERNAME_PROD=${USERNAME_ESCAPED}" >> $GITHUB_ENV
         echo "PASSWORD_PROD=${PASSWORD_ESCAPED}" >> $GITHUB_ENV
 
+    - name: Install Android SDK Build-Tools
+      run: sdkmanager "build-tools;30.0.3"
+
     - name: Install dependencies
       run: ./gradlew dependencies
 
@@ -40,7 +43,7 @@ jobs:
       env:
         USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
         PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
-      run: ./gradlew assembleRelease --info --stacktrace
+      run: ./gradlew assembleRelease --debug --stacktrace
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
