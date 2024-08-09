@@ -22,6 +22,9 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
+    - name: Set executable permissions
+      run: chmod +x ./gradlew
+
     - name: Set up environment variables
       run: |
         echo "USERNAME_PROD=${{ secrets.USERNAME_PROD }}" >> $GITHUB_ENV
@@ -31,6 +34,7 @@ jobs:
       run: ./gradlew dependencies
 
     - name: Build the app
+      shell: bash
       env:
         USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
         PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
