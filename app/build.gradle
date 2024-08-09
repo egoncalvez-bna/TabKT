@@ -25,13 +25,13 @@ android {
         debug {
             /*buildConfigField "String", "USERNAME", "\"usuarioDesarrollo\""
             buildConfigField "String", "PASSWORD", "\"contraseñaDesarrollo\""*/
-            buildConfigField "String", "USERNAME", "\"${System.getenv('USERNAME_PROD')}\""
-            buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD_PROD')}\""
+           buildConfigField "String", "USERNAME", "\"${System.getenv('USERNAME_PROD')?.replace("\"", "\\\"") ?: ""}\""
+            buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD_PROD')?.replace("\"", "\\\"") ?: ""}\""
 
         }
         release {
-            buildConfigField "String", "USERNAME", "\"${System.getenv('USERNAME_PROD')}\""
-            buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD_PROD')}\""
+           buildConfigField "String", "USERNAME", "\"${System.getenv('USERNAME_PROD')?.replace("\"", "\\\"") ?: ""}\""
+            buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD_PROD')?.replace("\"", "\\\"") ?: ""}\""
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
