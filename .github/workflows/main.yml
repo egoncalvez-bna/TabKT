@@ -22,8 +22,9 @@ jobs:
         java-version: '11'
 
     - name: Set up environment variables
-      run: echo "USERNAME_PROD=${{ secrets.USERNAME_PROD }}" >> $GITHUB_ENV
-      run: echo "PASSWORD_PROD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
+      run: |
+        echo "USERNAME_PROD=${{ secrets.USERNAME_PROD }}" >> $GITHUB_ENV
+        echo "PASSWORD_PROD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
 
     - name: Install dependencies
       run: ./gradlew dependencies
