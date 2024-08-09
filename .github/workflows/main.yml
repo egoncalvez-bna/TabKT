@@ -3,10 +3,10 @@ name: Android CI
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -20,25 +20,26 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '17'
-        distribution: 'temurin'  # Puedes usar 'temurin', 'zulu', etc.
+        distribution: 'temurin'
 
     - name: Set executable permissions
       run: chmod +x ./gradlew
 
-    - name: Set up environment variables
+    - name: Escape and set environment variables
       run: |
-        echo "USERNAME_PROD=${{ secrets.USERNAME_PROD }}" >> $GITHUB_ENV
-        echo "PASSWORD_PROD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
+        USERNAME_ESCAPED=$(echo ${{ secrets.USERNAME_PROD }} | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
+        PASSWORD_ESCAPED=$(echo ${{ secrets.PASSWORD_PROD }} | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
+        echo "USERNAME_PROD=${USERNAME_ESCAPED}" >> $GITHUB_ENV
+        echo "PASSWORD_PROD=${PASSWORD_ESCAPED}" >> $GITHUB_ENV
 
     - name: Install dependencies
       run: ./gradlew dependencies
 
     - name: Build the app
-      shell: bash
       env:
         USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
         PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
-      run: ./gradlew assembleRelease
+      run: ./gradlew assembleRelease --info --stacktrace
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
