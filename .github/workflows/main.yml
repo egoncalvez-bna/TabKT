@@ -21,10 +21,17 @@ jobs:
       with:
         java-version: '11'
 
+    - name: Set up environment variables
+      run: echo "USERNAME_PROD=${{ secrets.USERNAME_PROD }}" >> $GITHUB_ENV
+      run: echo "PASSWORD_PROD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
+
     - name: Install dependencies
       run: ./gradlew dependencies
 
     - name: Build the app
+      env:
+        USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
+        PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
       run: ./gradlew assembleRelease
 
     - name: Upload build artifacts
