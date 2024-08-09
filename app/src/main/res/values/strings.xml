@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">WebConteinerApp</string>
+
+    <string-array name="environments_array">
+        <item>Producción</item>
+        <item>Testing</item>
+        <item>Desarrollo</item>
+    </string-array>
+</resources>

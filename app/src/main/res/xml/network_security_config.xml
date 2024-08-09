@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.7.232.38</domain>
+        <domain includeSubdomains="true">dap13cc0001.dcc.dbna.net</domain>
+    <trust-anchors>
+        <certificates src="@raw/dap13cc0001" />
+    </trust-anchors>
+</domain-config>
+</network-security-config>

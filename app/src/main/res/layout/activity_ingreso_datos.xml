@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fondo"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="-165dp"
+        tools:layout_editor_absoluteY="-252dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            app:srcCompat="@drawable/logo_bna1" />
+
+        <TextView
+            android:id="@+id/TextViewTitle1"
+            android:layout_width="811dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="BIENVENIDO AL SISTEMA"
+            android:textColor="#FFFFFF"
+            android:textSize="14pt"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/TextViewTitle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="DE AUTOGESTIÓN DE TURNOS"
+            android:textColor="#FFFFFF"
+            android:textSize="14pt"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TextViewTitle3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:text="CONFIGURACION INICIAL"
+            android:textColor="#FFFFFF"
+            android:textSize="14pt"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TextViewName4"
+            android:layout_width="540dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:layout_marginTop="60dp"
+            android:baselineAligned="false"
+            android:text="Numero de dispositivo:"
+            android:textColor="#FFFFFF"
+            android:textSize="15pt" />
+
+        <EditText
+            android:id="@+id/EditTextName"
+            android:layout_width="540dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#FFFFFF"
+            android:hint="1"
+            android:inputType="number|textNoSuggestions"
+            android:maxLength="4"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFD8D4D4"
+            android:textSize="14pt" />
+
+
+        <TextView
+            android:id="@+id/TextViewSucursal"
+            android:layout_width="540dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:text="Sucursal:"
+            android:textColor="#FFFFFF"
+            android:textSize="15pt" />
+
+
+        <EditText
+            android:id="@+id/EditTextSucursal"
+            android:layout_width="543dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#FFFFFF"
+            android:hint="0085"
+            android:inputType="number|textNoSuggestions"
+            android:maxLength="4"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFD8D4D4"
+            android:textSize="14pt" />
+
+        <TextView
+            android:id="@+id/TextViewAmbiente"
+            android:layout_width="540dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:text="Ambiente:"
+            android:textColor="#FFFFFF"
+            android:textSize="15pt" />
+
+        <Spinner
+            android:id="@+id/environmentSpinner"
+            android:layout_width="560dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:autofillHints=""
+            android:backgroundTint="#FFFFFF"
+            android:spinnerMode="dropdown" />
+
+        <Button
+            android:id="@+id/ButtonGuardar"
+            android:layout_width="223dp"
+            android:layout_height="101dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:background="#d9b38a"
+            android:gravity="center"
+            android:text="REGISTRAR"
+            android:textSize="30dp" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+        android:layout_width="102dp"
+        android:layout_height="109dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
