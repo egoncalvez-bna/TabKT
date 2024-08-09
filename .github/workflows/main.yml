@@ -57,4 +57,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: release-apk
-        path: app/debug/app-release.apk
+        path: app/build/outputs/apk/release/app-release.apk
+        if-no-files-found: warn
