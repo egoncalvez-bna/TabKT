@@ -25,15 +25,20 @@ jobs:
     - name: Set executable permissions
       run: chmod +x ./gradlew
 
-    - name: Escape and set environment variables
+    - name: Install Android SDK
       run: |
-        USERNAME_ESCAPED=$(echo ${{ secrets.USERNAME_PROD }} | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
-        PASSWORD_ESCAPED=$(echo ${{ secrets.PASSWORD_PROD }} | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
-        echo "USERNAME_PROD=${USERNAME_ESCAPED}" >> $GITHUB_ENV
-        echo "PASSWORD_PROD=${PASSWORD_ESCAPED}" >> $GITHUB_ENV
+        sudo apt-get update
+        sudo apt-get install -y wget unzip
+        wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
+        unzip commandlinetools-linux-8512546_latest.zip -d $HOME/android-sdk
+        export ANDROID_SDK_ROOT=$HOME/android-sdk
+        yes | $ANDROID_SDK_ROOT/cmdline-tools/bin/sdkmanager --licenses
+        $ANDROID_SDK_ROOT/cmdline-tools/bin/sdkmanager "build-tools;30.0.3" "platforms;android-30"
 
-    - name: Install Android SDK Build-Tools
-      run: sdkmanager "build-tools;30.0.3"
+    - name: Set up environment variables
+      run: |
+        echo "USERNAME_PROD=${{ secrets.USERNAME_PROD }}" >> $GITHUB_ENV
+        echo "PASSWORD_PROD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
 
     - name: Install dependencies
       run: ./gradlew dependencies
