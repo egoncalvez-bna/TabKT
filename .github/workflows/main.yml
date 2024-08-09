@@ -51,7 +51,7 @@ jobs:
       env:
         USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
         PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
-      run: ./gradlew assembleRelease --debug --stacktrace
+      run: ./gradlew assembleRelease --info --stacktrace
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
