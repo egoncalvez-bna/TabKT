@@ -43,6 +43,10 @@ jobs:
         echo "USERNAME_PROD=${{ secrets.USERNAME_PROD }}" >> $GITHUB_ENV
         echo "PASSWORD_PROD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
 
+      - name: Clean project
+        run: ./gradlew clean
+
+
     - name: Install dependencies
       run: ./gradlew dependencies
 
@@ -53,13 +57,16 @@ jobs:
         PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
       run: ./gradlew assembleRelease --info --stacktrace
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: release-apk
-        path: app/app-release.apk
-        if-no-files-found: warn
-      
-    - name: List build outputs
-      run: ls -R app/
+      - name: Verify output path
+        run: |
+          APK_PATH=app/build/outputs/apk/release/app-release.apk
+          if [ ! -f "$APK_PATH" ]; then
+            echo "APK not found at $APK_PATH. Check Gradle configuration or build output path."
+          fi
 
+      - name: Upload build artifacts (if successful)
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: app/build/outputs/apk/release/app-release.apk  # Update if needed
+          if-no-files-found: fail  # Fail instead of just warning
