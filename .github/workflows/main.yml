@@ -1,50 +1,80 @@
-name: Build Android Project
+name: Production Builds
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Release-Build"
+        default: "Generate release build"
+      testers:
+        type: choice
+        description: "Select testers"
+        options:
+          - android
+          - internalTesters
+          - everyone
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checking out branch
+        uses: actions/checkout@v3
 
-    - name: Set up JDK
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
 
-    - name: Set up Android SDK
-      uses: android-actions/setup-android@v2
-      with:
-        api-level: '33'
-        build-tools: '33.0.0'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2.0.10
 
-    - name: Debug JKS_BASE64 Content
-      run: echo "$JKS_BASE64" | base64 -d
-      env:
-        JKS_BASE64: ${{ secrets.JKS_BASE64 }}
+      - name: Grant execution permissions to Gradlew
+        run: chmod +x ./gradlew
 
-    - name: Decode JKS file
-      run: echo $JKS_BASE64 | base64 -d > TabKT.jks
-      env:
-        JKS_BASE64: ${{ secrets.JKS_BASE64 }}
+      - name: Decode Keystore
+        env:
+          ENCODED_STRING: ${{ secrets.ENCODED_STRING }}  # Asegúrate de que este secreto esté configurado en GitHub
+        run: |
+          echo "$ENCODED_STRING" > keystore-b64.txt
+          base64 -d keystore-b64.txt > keystore.jks
 
-    - name: Build with Gradle
-      run: ./gradlew assembleRelease
-      env:
-        JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.12-7/x64
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
-        JKS_BASE64: ${{ secrets.JKS_BASE64 }}
+      - name: Build Release apk
+        env:
+          USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
+          PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
+        run: |
+          echo "USERNAME_PROD=$USERNAME_PROD"
+          echo "PASSWORD_PROD=$PASSWORD_PROD"
+          ./gradlew assembleRelease --stacktrace
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v3
-      with:
-        name: apk
-        path: app/build/outputs/apk/release/app-release.apk
+      - name: Build Release bundle
+        env:
+          USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
+          PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
+        run: |
+          echo "USERNAME_PROD=$USERNAME_PROD"
+          echo "PASSWORD_PROD=$PASSWORD_PROD"
+          ./gradlew bundleRelease --stacktrace
+
+      - name: Get release file aab path
+        id: releaseAab
+        run: echo "aabfile=$(find app/build/outputs/bundle/release/*.aab)" >> $GITHUB_ENV
+
+      - name: Get release file apk path
+        id: releaseApk
+        run: echo "apkfile=$(find app/build/outputs/apk/release/*.apk)" >> $GITHUB_ENV
+
+      - name: Zip Files
+        uses: papeloto/action-zip@v1
+        with:
+          files: ${{ steps.releaseAab.outputs.aabfile }} ${{ steps.releaseApk.outputs.apkfile }}
+          dest: ${{ steps.releaseApk.outputs.apkfile }}.zip
+
+      - name: Upload Release Build to Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+           name: release-artifacts
+           path: ${{ steps.releaseApk.outputs.apkfile }}
