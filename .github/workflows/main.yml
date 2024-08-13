@@ -1,81 +1,64 @@
-name: Production Builds
+name: Android CI
+
 on:
-  workflow_dispatch:
-    inputs:
-      name:
-        description: "Release-Build"
-        default: "Generate release build"
-      testers:
-        type: choice
-        description: "Select testers"
-        options:
-          - android
-          - internalTesters
-          - everyone
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checking out branch
-        uses: actions/checkout@v3
+    - name: Check out the code
+      uses: actions/checkout@v3
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 17
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2.0.10
+    - name: Set executable permissions
+      run: chmod +x ./gradlew
 
-      - name: Grant execution permissions to Gradlew
-        run: chmod +x ./gradlew
+    - name: Install Android SDK
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget unzip
+        mkdir -p $HOME/android-sdk/cmdline-tools
+        wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O commandlinetools.zip
+        unzip commandlinetools.zip -d $HOME/android-sdk/cmdline-tools
+        mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
+        export ANDROID_SDK_ROOT=$HOME/android-sdk
+        export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+        yes | sdkmanager --licenses
+        sdkmanager "build-tools;30.0.3" "platforms;android-30"
 
-      - name: Decode Keystore
-        env:
-          USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
-          PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
-        run: |
-          echo $ENCODED_STRING > keystore-b64.txt
-          base64 -d keystore-b64.txt > keystore.jks
+    - name: Set up environment variables
+      run: |
+        echo "USERNAME_PROD=${{ secrets.USERNAME_PROD }}" >> $GITHUB_ENV
+        echo "PASSWORD_PROD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
 
-      - name: Build Release apk
-        env:
-          USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
-          PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
-        run: ./gradlew assembleRelease --stacktrace
+    - name: Install dependencies
+      run: ./gradlew dependencies
 
-      - name: Verify APK file presence
-        run: |
-          if [ ! -f app/build/outputs/apk/release/app-release.apk ]; then
-            echo "Signed APK file not found!"
-            exit 1
-          fi
+    - name: Build the app
+      shell: bash
+      env:
+        USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
+        PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
+      run: ./gradlew assembleRelease --info --stacktrace
 
-      - name: Build Release bundle
-        env:
-          USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
-          PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
-        run: ./gradlew bundleRelease --stacktrace
+    - name: List APK files
+      run: ls -la app/build/outputs/apk/release/
 
-      - name: Get release file aab path
-        id: releaseAab
-        run: echo "aabfile=$(find app/build/outputs/bundle/release/*.aab)" >> $GITHUB_OUTPUT
-
-      - name: Get release file apk path
-        id: releaseApk
-        run: echo "apkfile=$(find app/build/outputs/apk/release/app-release.apk)" >> $GITHUB_OUTPUT
-
-      - name: Zip Files
-        uses: papeloto/action-zip@v1
-        with:
-          files: ${{ steps.releaseAab.outputs.aabfile }} ${{ steps.releaseApk.outputs.apkfile }}
-          dest: ${{ steps.releaseApk.outputs.apkfile }}.zip
-
-      - name: Upload Release Build to Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-           name: release-artifacts
-           path: ${{ steps.releaseApk.outputs.apkfile }}.zip
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-apk
+        path: app/build/outputs/apk/release/app-release.apk
+        if-no-files-found: error
