@@ -1,66 +1,46 @@
-name: Production Builds
+name: Build Android Project
+
 on:
-  workflow_dispatch:
-    inputs:
-      name:
-        description: "Release-Build"
-        default: "Generate release build"
-      testers:
-        type: choice
-        description: "Select testers"
-        options:
-          - android
-          - internalTesters
-          - everyone
+  push:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checking out branch
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 17
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2.0.10
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        api-level: '33'
+        build-tools: '33.0.0'
 
-      - name: Grant execution permissions to Gradlew
-        run: chmod +x ./gradlew
+    - name: Decode JKS file
+      run: echo $JKS_BASE64 | base64 -d > TabKT.jks
+      env:
+        JKS_BASE64: ${{ secrets.JKS_BASE64 }}
 
-      - name: Decode Keystore
-        env:
-          JKS_BASE64: ${{ secrets.JKS_BASE64 }}
-        run: echo $JKS_BASE64 | base64 -d > TabKT.jks
+    - name: Build with Gradle
+      run: ./gradlew assembleRelease
+      env:
+        JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.12-7/x64
+        ANDROID_HOME: /usr/local/lib/android/sdk
+        ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+        JKS_BASE64: ${{ secrets.JKS_BASE64 }}
+        # Puedes añadir otras variables de entorno necesarias aquí
 
-      - name: Build Release APK
-        run: ./gradlew assembleRelease --stacktrace
-
-      - name: Sign the APK
-        run: |
-          apksigner sign --ks TabKT.jks --ks-key-alias ${{ secrets.KEY_ALIAS }} \
-          --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
-          --key-pass pass:${{ secrets.KEY_PASSWORD }} \
-          --out app/build/outputs/apk/release/app-release-signed.apk \
-          app/build/outputs/apk/release/app-release-unsigned.apk
-
-      - name: Get signed APK path
-        id: releaseApk
-        run: echo "apkfile=app/build/outputs/apk/release/app-release-signed.apk" >> $GITHUB_OUTPUT
-
-      - name: Zip Files
-        uses: papeloto/action-zip@v1
-        with:
-          files: ${{ steps.releaseApk.outputs.apkfile }}
-          dest: ${{ steps.releaseApk.outputs.apkfile }}.zip
-
-      - name: Upload Release Build to Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-           name: release-artifacts
-           path: ${{ steps.releaseApk.outputs.apkfile }}.zip
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: apk
+        path: app/build/outputs/apk/release/app-release.apk
