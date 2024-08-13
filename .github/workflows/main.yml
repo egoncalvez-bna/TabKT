@@ -60,5 +60,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: release-apk
-        path: app/build/outputs/apk/release/app-release.apk
+        path: app/build/outputs/apk/release/app-release-unsigned.apk
         if-no-files-found: error
