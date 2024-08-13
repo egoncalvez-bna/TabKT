@@ -29,6 +29,8 @@ android {
             buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD_PROD')?.replace("\"", "\\\"") ?: ""}\""
         }
         release {
+            signingConfig signingConfigs.release
+
             buildConfigField "String", "USERNAME", "\"${System.getenv('USERNAME_PROD')?.replace("\"", "\\\"") ?: ""}\""
             buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD_PROD')?.replace("\"", "\\\"") ?: ""}\""
 
