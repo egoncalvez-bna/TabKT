@@ -93,7 +93,6 @@ class MainActivity : AppCompatActivity() {
         configureSsl(myWebView)
 
         // Prueba de implementación de BNA cripto:
-        //val crypto = CryptoProvider.getProvider().simCrypto
         /*   val pass = when (ambiente) {
                "Producción" -> ""
                "Testing" -> "+GFwS5Wg1Q54A1kyEONCpg=="
@@ -113,6 +112,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             return // Detener la ejecución si la contraseña no es válida
         }
+        Log.e("ValorPassword", pass)
 
         myWebView.setWebViewClient(object : MyWebViewClient(progressBar) {
             override fun onReceivedHttpAuthRequest(
@@ -130,9 +130,14 @@ class MainActivity : AppCompatActivity() {
                         "CC\\H00097"
                     }
                 }
-                    //val password = crypto.desencriptar(pass)
-                    val password = pass//crypto.desencriptar(pass)
-                    handler.proceed(username, password)
+                var password =""
+                try {
+                    val crypto = CryptoProvider.getProvider().simCrypto
+                    password = crypto.desencriptar(pass)
+                } catch (e: Exception) {
+                    Log.e("BNA-Crypto", "Error al utilizar BNA-Crypto", e)
+                }
+                handler.proceed(username, password)
             }
         })
 
