@@ -36,14 +36,14 @@ jobs:
       - name: Decode Keystore
         env:
           JKS_BASE64: ${{ secrets.JKS_BASE64 }}
-        run: echo $JKS_BASE64 | base64 -d > my-release-key.jks
+        run: echo $JKS_BASE64 | base64 -d > TabKT.jks
 
       - name: Build Release APK
         run: ./gradlew assembleRelease --stacktrace
 
       - name: Sign the APK
         run: |
-          apksigner sign --ks my-release-key.jks --ks-key-alias ${{ secrets.KEY_ALIAS }} \
+          apksigner sign --ks TabKT.jks --ks-key-alias ${{ secrets.KEY_ALIAS }} \
           --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
           --key-pass pass:${{ secrets.KEY_PASSWORD }} \
           --out app/build/outputs/apk/release/app-release-signed.apk \
