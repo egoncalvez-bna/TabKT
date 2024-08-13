@@ -56,6 +56,10 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
+        // Incluir .jar files explicitly
+        pickFirst 'Lib/BNACrypt.jar'
+        pickFirst 'Lib/BNACryptoLib_0.1.jar'
+        pickFirst 'Lib/BNAWGet.jar'
     }
 }
 
