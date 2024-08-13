@@ -44,14 +44,24 @@ jobs:
         echo "PASSWORD_PROD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
 
     - name: Install dependencies
-      run: ./gradlew dependencies
+      run: ./gradlew clean build --refresh-dependencies
+
+    - name: List JAR files
+      run: find . -name "*.jar"
 
     - name: Build the app
       shell: bash
       env:
         USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
         PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
-      run: ./gradlew assembleRelease --info --stacktrace
+      run: ./gradlew assembleRelease --info --stacktrace -x lint
+
+    - name: Debugging information
+      run: |
+        echo "Classpath:"
+        ./gradlew -q dependencies app:dependencies --configuration releaseRuntimeClasspath
+        echo "Checking APK contents:"
+        unzip -l app/build/outputs/apk/release/app-release-unsigned.apk | grep "BasicCryptoProvider"
 
     - name: List APK files
       run: ls -la app/build/outputs/apk/release/
