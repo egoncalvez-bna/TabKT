@@ -25,8 +25,13 @@ jobs:
         api-level: '33'
         build-tools: '33.0.0'
 
+    - name: Debug JKS_BASE64 Content
+      run: echo "$JKS_BASE64" | base64 -d
+      env:
+        JKS_BASE64: ${{ secrets.JKS_BASE64 }}
+
     - name: Decode JKS file
-      run: echo $JKS_BASE64 | base64 -d > TabKT1.jks
+      run: echo $JKS_BASE64 | base64 -d > TabKT.jks
       env:
         JKS_BASE64: ${{ secrets.JKS_BASE64 }}
 
@@ -37,7 +42,6 @@ jobs:
         ANDROID_HOME: /usr/local/lib/android/sdk
         ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
         JKS_BASE64: ${{ secrets.JKS_BASE64 }}
-        # Puedes añadir otras variables de entorno necesarias aquí
 
     - name: Upload APK
       uses: actions/upload-artifact@v3
