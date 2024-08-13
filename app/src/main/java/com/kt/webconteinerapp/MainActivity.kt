@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         configureSsl(myWebView)
 
         // Prueba de implementación de BNA cripto:
-        val crypto = CryptoProvider.getProvider().simCrypto
+        //val crypto = CryptoProvider.getProvider().simCrypto
         /*   val pass = when (ambiente) {
                "Producción" -> ""
                "Testing" -> "+GFwS5Wg1Q54A1kyEONCpg=="
@@ -105,6 +105,14 @@ class MainActivity : AppCompatActivity() {
            }
            {}*/
         val pass = BuildConfig.PASSWORD
+        if (pass.isNullOrEmpty()) {
+            // Manejar el caso en el que la contraseña es nula o vacía
+            Log.e("PasswordError", "La contraseña no está definida en BuildConfig.")
+            val intent = Intent(this, ErroresActivity::class.java)
+            intent.putExtra("EXTRA_TEXT", "Error: la contraseña es nula o vacía")
+            startActivity(intent)
+            return // Detener la ejecución si la contraseña no es válida
+        }
 
         myWebView.setWebViewClient(object : MyWebViewClient(progressBar) {
             override fun onReceivedHttpAuthRequest(
@@ -122,18 +130,9 @@ class MainActivity : AppCompatActivity() {
                         "CC\\H00097"
                     }
                 }
-                if (pass == "null") {
-                    // Crear Intent para iniciar SecondActivity
-                    val intent = Intent(this@MainActivity, ErroresActivity::class.java)
-                    // Agregar el texto como un
-                    intent.putExtra("EXTRA_TEXT", "Error: la contraseña es nula")
-                    // Iniciar SecondActivity
-                    startActivity(intent)
-                } else {
                     //val password = crypto.desencriptar(pass)
-                    val password = crypto.desencriptar(pass)
+                    val password = pass//crypto.desencriptar(pass)
                     handler.proceed(username, password)
-                }
             }
         })
 
