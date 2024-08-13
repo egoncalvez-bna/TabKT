@@ -26,7 +26,7 @@ jobs:
         build-tools: '33.0.0'
 
     - name: Decode JKS file
-      run: echo $JKS_BASE64 | base64 -d > TabKT.jks
+      run: echo $JKS_BASE64 | base64 -d > TabKT1.jks
       env:
         JKS_BASE64: ${{ secrets.JKS_BASE64 }}
 
