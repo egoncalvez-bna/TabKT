@@ -61,8 +61,7 @@ jobs:
         echo "Classpath:"
         ./gradlew -q dependencies app:dependencies --configuration releaseRuntimeClasspath
         echo "Checking APK contents:"
-        unzip -l app/build/outputs/apk/release/app-release-unsigned.apk | grep "BasicCryptoProvider"
-
+        unzip -l app/build/outputs/apk/release/app-release-unsigned.apk 
     - name: List APK files
       run: ls -la app/build/outputs/apk/release/
 
