@@ -103,7 +103,12 @@ class MainActivity : AppCompatActivity() {
                }
            }
            {}*/
-        val pass = BuildConfig.PASSWORD
+
+        var pass = BuildConfig.PASSWORD
+
+        val crypto = CryptoProvider.getProvider().simCrypto
+        var pepe = crypto.desencriptar(pass)
+
         if (pass.isNullOrEmpty()) {
             // Manejar el caso en el que la contraseña es nula o vacía
             Log.e("PasswordError", "La contraseña no está definida en BuildConfig.")
