@@ -26,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import ar.com.bna.security.crypto.CryptoProvider
-import ar.com.bna.security.crypto.impl.BasicCryptoProvider
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
 import javax.net.ssl.SSLContext
@@ -104,7 +103,10 @@ class MainActivity : AppCompatActivity() {
                }
            }
            {}*/
-        val pass = BuildConfig.PASSWORD
+
+        var pass = BuildConfig.PASSWORD
+        Log.e("PasswordContent", "La contraseña es: $pass")
+
         if (pass.isNullOrEmpty()) {
             // Manejar el caso en el que la contraseña es nula o vacía
             Log.e("PasswordError", "La contraseña no está definida en BuildConfig.")
@@ -113,7 +115,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             return // Detener la ejecución si la contraseña no es válida
         }
-        Log.e("ValorPassword", pass)
 
         myWebView.setWebViewClient(object : MyWebViewClient(progressBar) {
             override fun onReceivedHttpAuthRequest(
