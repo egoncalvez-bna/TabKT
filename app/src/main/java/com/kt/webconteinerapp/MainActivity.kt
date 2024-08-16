@@ -106,8 +106,6 @@ class MainActivity : AppCompatActivity() {
 
         var pass = BuildConfig.PASSWORD
         Log.e("PasswordContent", "La contraseña es: $pass")
-        val crypto = CryptoProvider.getProvider().simCrypto
-        var pepe = crypto.desencriptar("ep+OHJBHisF4A1kyEONCpg==")
 
         if (pass.isNullOrEmpty()) {
             // Manejar el caso en el que la contraseña es nula o vacía
@@ -117,7 +115,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             return // Detener la ejecución si la contraseña no es válida
         }
-        Log.e("ValorPassword", pass)
 
         myWebView.setWebViewClient(object : MyWebViewClient(progressBar) {
             override fun onReceivedHttpAuthRequest(
