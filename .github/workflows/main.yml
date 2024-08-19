@@ -74,7 +74,7 @@ jobs:
     - name: Debug environment variables
       run: cat $GITHUB_ENV
  
-    - name: Debug environment variables
+    - name: Debug environment variables1
       run: |
         echo "Printing all environment variables..."
         printenv
