@@ -90,11 +90,6 @@ jobs:
         DOMAIN_SERVER_SUC: ${{ env.DOMAIN_SERVER_SUC }}
         DOMAIN_USER: ${{ env.DOMAIN_USER }}
 
-    - name: Debug environment variables2
-      run: |
-        echo "Printing all environment variables..."
-        printenv
-        
     - name: Debugging information
       run: |
         echo "Classpath:"
