@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - master
+      - testing
+      - develop
   pull_request:
     branches:
       - master
+      - testing
+      - develop
 
 jobs:
   build:
@@ -40,8 +44,25 @@ jobs:
 
     - name: Set up environment variables
       run: |
-        echo "USERNAME_PROD=${{ secrets.USERNAME_PROD }}" >> $GITHUB_ENV
-        echo "PASSWORD_PROD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
+        if [[ $GITHUB_REF == refs/heads/master ]]; then
+          echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          echo "DOMAIN_SERVER_SUC=${{ secrets.DOMAIN_SERVER_SUC_PROD }}" >> $GITHUB_ENV
+          echo "DOMAIN_USER=${{ secrets.DOMAIN_USER_PROD }}" >> $GITHUB_ENV
+          echo "SERVICE_USERNAME=${{ secrets.SERVICE_USERNAME_PROD }}" >> $GITHUB_ENV
+          echo "PASSWORD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
+        elif [[ $GITHUB_REF == refs/heads/testing ]]; then
+          echo "ENVIRONMENT=testing" >> $GITHUB_ENV
+          echo "DOMAIN_SERVER_SUC=${{ secrets.DOMAIN_SERVER_SUC_TEST }}" >> $GITHUB_ENV
+          echo "DOMAIN_USER=${{ secrets.DOMAIN_USER_TEST }}" >> $GITHUB_ENV
+          echo "SERVICE_USERNAME=${{ secrets.SERVICE_USERNAME_TEST }}" >> $GITHUB_ENV
+          echo "PASSWORD=${{ secrets.PASSWORD_TEST }}" >> $GITHUB_ENV
+        elif [[ $GITHUB_REF == refs/heads/develop ]]; then
+          echo "ENVIRONMENT=development" >> $GITHUB_ENV
+          echo "DOMAIN_SERVER_SUC=${{ secrets.DOMAIN_SERVER_SUC_DESA }}" >> $GITHUB_ENV
+          echo "DOMAIN_USER=${{ secrets.DOMAIN_USER_DESA }}" >> $GITHUB_ENV
+          echo "SERVICE_USERNAME=${{ secrets.SERVICE_USERNAME_DESA }}" >> $GITHUB_ENV
+          echo "PASSWORD=${{ secrets.PASSWORD_DESA }}" >> $GITHUB_ENV
+        fi
 
     - name: Install dependencies
       run: ./gradlew clean build --refresh-dependencies
@@ -52,7 +73,10 @@ jobs:
     - name: Build the app
       shell: bash
       env:
-        USERNAME_PROD: ${{ secrets.USERNAME_PROD }}
+        SERVICE_USERNAME: ${{ secrets.SERVICE_USERNAME }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        DOMAIN_SERVER_SUC: ${{ env.DOMAIN_SERVER_SUC }}
+        DOMAIN_USER: ${{ env.DOMAIN_USER }}
         PASSWORD_PROD: ${{ secrets.PASSWORD_PROD }}
       run: ./gradlew assembleRelease --info --stacktrace -x lint
 
@@ -62,6 +86,7 @@ jobs:
         ./gradlew -q dependencies app:dependencies --configuration releaseRuntimeClasspath
         echo "Checking APK contents:"
         unzip -l app/build/outputs/apk/release/app-release-unsigned.apk 
+
     - name: List APK files
       run: ls -la app/build/outputs/apk/release/
 
