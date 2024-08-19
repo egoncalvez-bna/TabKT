@@ -55,19 +55,19 @@ jobs:
     - name: Set up environment variables
       run: |
         if [[ ${{ github.event.inputs.environment }} == 'production' ]]; then
-          echo "DOMAIN_SERVER_SUC=${{ secrets.DOMAIN_SERVER_SUC_PROD }}" >> $GITHUB_ENV
-          echo "DOMAIN_USER=${{ secrets.DOMAIN_USER_PROD }}" >> $GITHUB_ENV
-          echo "SERVICE_USERNAME=${{ secrets.SERVICE_USERNAME_PROD }}" >> $GITHUB_ENV
+          echo "DOMAIN_SERVER_SUC=${{ env.DOMAIN_SERVER_SUC_PROD }}" >> $GITHUB_ENV
+          echo "DOMAIN_USER=${{ env.DOMAIN_USER_PROD }}" >> $GITHUB_ENV
+          echo "SERVICE_USERNAME=${{ env.SERVICE_USERNAME_PROD }}" >> $GITHUB_ENV
           echo "PASSWORD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
         elif [[ ${{ github.event.inputs.environment }} == 'testing' ]]; then
-          echo "DOMAIN_SERVER_SUC=${{ secrets.DOMAIN_SERVER_SUC_TEST }}" >> $GITHUB_ENV
-          echo "DOMAIN_USER=${{ secrets.DOMAIN_USER_TEST }}" >> $GITHUB_ENV
-          echo "SERVICE_USERNAME=${{ secrets.SERVICE_USERNAME_TEST }}" >> $GITHUB_ENV
+          echo "DOMAIN_SERVER_SUC=${{ env.DOMAIN_SERVER_SUC_TEST }}" >> $GITHUB_ENV
+          echo "DOMAIN_USER=${{ env.DOMAIN_USER_TEST }}" >> $GITHUB_ENV
+          echo "SERVICE_USERNAME=${{ env.SERVICE_USERNAME_TEST }}" >> $GITHUB_ENV
           echo "PASSWORD=${{ secrets.PASSWORD_TEST }}" >> $GITHUB_ENV
         elif [[ ${{ github.event.inputs.environment }} == 'development' ]]; then
-          echo "DOMAIN_SERVER_SUC=${{ secrets.DOMAIN_SERVER_SUC_DESA }}" >> $GITHUB_ENV
-          echo "DOMAIN_USER=${{ secrets.DOMAIN_USER_DESA }}" >> $GITHUB_ENV
-          echo "SERVICE_USERNAME=${{ secrets.SERVICE_USERNAME_DESA }}" >> $GITHUB_ENV
+          echo "DOMAIN_SERVER_SUC=${{ env.DOMAIN_SERVER_SUC_DESA }}" >> $GITHUB_ENV
+          echo "DOMAIN_USER=${{ env.DOMAIN_USER_DESA }}" >> $GITHUB_ENV
+          echo "SERVICE_USERNAME=${{ env.SERVICE_USERNAME_DESA }}" >> $GITHUB_ENV
           echo "PASSWORD=${{ secrets.PASSWORD_DESA }}" >> $GITHUB_ENV
         fi
 
