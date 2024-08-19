@@ -57,10 +57,10 @@ jobs:
     - name: Build the app
       shell: bash
       env:
-        SERVICE_USERNAME: ${{ env.SERVICE_USERNAME }}
+        SERVICE_USERNAME: ${{ env.SERVICE_USERNAME_TEST }}
         PASSWORD: ${{ env.PASSWORD }}
-        DOMAIN_SERVER_SUC: ${{ env.DOMAIN_SERVER_SUC }}
-        DOMAIN_USER: ${{ env.DOMAIN_USER }}
+        DOMAIN_SERVER_SUC: ${{ env.DOMAIN_SERVER_SUCE_TEST }}
+        DOMAIN_USER: ${{ env.DOMAIN_USERE_TEST }}
       run: ./gradlew assembleRelease --info --stacktrace -x lint
     - name: Debug environment variables1
       run: |
