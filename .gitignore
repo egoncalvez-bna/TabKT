@@ -1,0 +1,43 @@
+# Build folders
+/build/
+/app/build/
+/**/build/
+
+# Local configuration files
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries/
+/.idea/caches/
+/.idea/modules.xml
+/.idea/assetWizardSettings.xml
+/.idea/misc.xml
+
+# Gradle files
+/.gradle/
+/gradle/
+/gradlew
+/gradlew.bat
+/gradle-wrapper.jar
+/gradle-wrapper.properties
+
+# Log files
+*.log
+
+# Android Studio specific files
+/captures/
+/output.json
+
+# Keystore files
+*.jks
+*.keystore
+
+# Personal settings
+.idea/
+/*.iml
+
+# Generated files by Android Studio
+/build/
+/.idea/
+/local.properties
+/.gradle/
+
