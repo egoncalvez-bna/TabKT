@@ -16,7 +16,7 @@ on:
       environment:
         description: 'Specify the environment for the build'
         required: true
-        default: 'production'
+        default: 'testing'
         options:
           - production
           - testing
@@ -73,7 +73,12 @@ jobs:
 
     - name: Debug environment variables
       run: cat $GITHUB_ENV
-
+ 
+    - name: Debug environment variables
+      run: |
+        echo "Printing all environment variables..."
+        printenv
+        
     - name: List JAR files
       run: find . -name "*.jar"
 
@@ -84,8 +89,12 @@ jobs:
         PASSWORD: ${{ env.PASSWORD }}
         DOMAIN_SERVER_SUC: ${{ env.DOMAIN_SERVER_SUC }}
         DOMAIN_USER: ${{ env.DOMAIN_USER }}
-      run: ./gradlew assembleRelease --info --stacktrace -x lint
 
+    - name: Debug environment variables2
+      run: |
+        echo "Printing all environment variables..."
+        printenv
+        
     - name: Debugging information
       run: |
         echo "Classpath:"
