@@ -3,8 +3,8 @@
 # min_api: 21
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.2"}
-# pg_map_id: ad203f9
-# pg_map_hash: SHA-256 ad203f98d46a731aeb3a7683ff2787cae5eac550c6fbc6712392fca2d035d6f5
+# pg_map_id: fd8abc3
+# pg_map_hash: SHA-256 fd8abc3c34405b558b985d5e6c6567da8b223c2299ac048e7c50cdb1a0635c7d
 android.support.v4.app.RemoteActionCompatParcelizer -> android.support.v4.app.RemoteActionCompatParcelizer:
     1:1:androidx.core.app.RemoteActionCompat read(androidx.versionedparcelable.VersionedParcel):0:0 -> read
       # {"id":"com.android.tools.r8.residualsignature","signature":"(Lw0/a;)Landroidx/core/app/RemoteActionCompat;"}
@@ -39695,61 +39695,54 @@ com.kt.webconteinerapp.MainActivity -> com.kt.webconteinerapp.MainActivity:
     android.webkit.WebView myWebView -> o
     android.widget.ProgressBar progressBar -> p
     int CAMERA_PERMISSION_REQUEST_CODE -> q
-    int $r8$clinit -> r
-    11:19:void androidx.appcompat.app.WindowDecorActionBar.hide():0:0 -> onCreate
-    11:19:void onCreate(android.os.Bundle):0 -> onCreate
-    20:21:void onCreate(android.os.Bundle):0:0 -> onCreate
-    22:37:int androidx.core.content.ContextCompat.checkSelfPermission(android.content.Context,java.lang.String):0:0 -> onCreate
-    22:37:void onCreate(android.os.Bundle):0 -> onCreate
-    38:182:void onCreate(android.os.Bundle):0:0 -> onCreate
-    183:216:void configureSsl(android.webkit.WebView):0:0 -> onCreate
-    183:216:void onCreate(android.os.Bundle):0 -> onCreate
-    217:222:java.util.List kotlin.collections.ArraysUtilJVM.asList(java.lang.Object[]):0:0 -> onCreate
-    217:222:java.util.List kotlin.collections.ArraysKt___ArraysJvmKt.asList(java.lang.Object[]):0 -> onCreate
-    217:222:java.util.List kotlin.collections.CollectionsKt__CollectionsKt.listOf(java.lang.Object[]):0 -> onCreate
-    217:222:void configureSsl(android.webkit.WebView):0 -> onCreate
-    217:222:void onCreate(android.os.Bundle):0 -> onCreate
-    223:225:java.util.List kotlin.collections.ArraysKt___ArraysJvmKt.asList(java.lang.Object[]):0:0 -> onCreate
-    223:225:java.util.List kotlin.collections.CollectionsKt__CollectionsKt.listOf(java.lang.Object[]):0 -> onCreate
-    223:225:void configureSsl(android.webkit.WebView):0 -> onCreate
-    223:225:void onCreate(android.os.Bundle):0 -> onCreate
-    226:295:void configureSsl(android.webkit.WebView):0:0 -> onCreate
-    226:295:void onCreate(android.os.Bundle):0 -> onCreate
-    296:306:void kotlin.io.CloseableKt.closeFinally(java.io.Closeable,java.lang.Throwable):0:0 -> onCreate
-    296:306:void configureSsl(android.webkit.WebView):0 -> onCreate
-    296:306:void onCreate(android.os.Bundle):0 -> onCreate
-    307:311:void configureSsl(android.webkit.WebView):0:0 -> onCreate
-    307:311:void onCreate(android.os.Bundle):0 -> onCreate
-    312:319:void kotlin.io.CloseableKt.closeFinally(java.io.Closeable,java.lang.Throwable):0:0 -> onCreate
+    9:17:void androidx.appcompat.app.WindowDecorActionBar.hide():0:0 -> onCreate
+    9:17:void onCreate(android.os.Bundle):0 -> onCreate
+    18:19:void onCreate(android.os.Bundle):0:0 -> onCreate
+    20:35:int androidx.core.content.ContextCompat.checkSelfPermission(android.content.Context,java.lang.String):0:0 -> onCreate
+    20:35:void onCreate(android.os.Bundle):0 -> onCreate
+    36:176:void onCreate(android.os.Bundle):0:0 -> onCreate
+    177:210:void configureSsl(android.webkit.WebView):0:0 -> onCreate
+    177:210:void onCreate(android.os.Bundle):0 -> onCreate
+    211:216:java.util.List kotlin.collections.ArraysUtilJVM.asList(java.lang.Object[]):0:0 -> onCreate
+    211:216:java.util.List kotlin.collections.ArraysKt___ArraysJvmKt.asList(java.lang.Object[]):0 -> onCreate
+    211:216:java.util.List kotlin.collections.CollectionsKt__CollectionsKt.listOf(java.lang.Object[]):0 -> onCreate
+    211:216:void configureSsl(android.webkit.WebView):0 -> onCreate
+    211:216:void onCreate(android.os.Bundle):0 -> onCreate
+    217:219:java.util.List kotlin.collections.ArraysKt___ArraysJvmKt.asList(java.lang.Object[]):0:0 -> onCreate
+    217:219:java.util.List kotlin.collections.CollectionsKt__CollectionsKt.listOf(java.lang.Object[]):0 -> onCreate
+    217:219:void configureSsl(android.webkit.WebView):0 -> onCreate
+    217:219:void onCreate(android.os.Bundle):0 -> onCreate
+    220:288:void configureSsl(android.webkit.WebView):0:0 -> onCreate
+    220:288:void onCreate(android.os.Bundle):0 -> onCreate
+    289:294:void kotlin.io.CloseableKt.closeFinally(java.io.Closeable,java.lang.Throwable):0:0 -> onCreate
+    289:294:void configureSsl(android.webkit.WebView):0 -> onCreate
+    289:294:void onCreate(android.os.Bundle):0 -> onCreate
+    295:298:void configureSsl(android.webkit.WebView):0:0 -> onCreate
+    295:298:void onCreate(android.os.Bundle):0 -> onCreate
+    299:305:void kotlin.io.CloseableKt.closeFinally(java.io.Closeable,java.lang.Throwable):0:0 -> onCreate
+    299:305:void configureSsl(android.webkit.WebView):0 -> onCreate
+    299:305:void onCreate(android.os.Bundle):0 -> onCreate
+    306:310:void kotlin.ExceptionsKt__ExceptionsKt.addSuppressed(java.lang.Throwable,java.lang.Throwable):0:0 -> onCreate
+    306:310:void kotlin.io.CloseableKt.closeFinally(java.io.Closeable,java.lang.Throwable):0 -> onCreate
+    306:310:void configureSsl(android.webkit.WebView):0 -> onCreate
+    306:310:void onCreate(android.os.Bundle):0 -> onCreate
+    311:311:void configureSsl(android.webkit.WebView):0:0 -> onCreate
+    311:311:void onCreate(android.os.Bundle):0 -> onCreate
+    312:319:void kotlin.collections.CollectionsKt__CollectionsKt.throwIndexOverflow():0:0 -> onCreate
     312:319:void configureSsl(android.webkit.WebView):0 -> onCreate
     312:319:void onCreate(android.os.Bundle):0 -> onCreate
-    320:324:void kotlin.ExceptionsKt__ExceptionsKt.addSuppressed(java.lang.Throwable,java.lang.Throwable):0:0 -> onCreate
-    320:324:void kotlin.io.CloseableKt.closeFinally(java.io.Closeable,java.lang.Throwable):0 -> onCreate
-    320:324:void configureSsl(android.webkit.WebView):0 -> onCreate
-    320:324:void onCreate(android.os.Bundle):0 -> onCreate
-    325:325:void configureSsl(android.webkit.WebView):0:0 -> onCreate
-    325:325:void onCreate(android.os.Bundle):0 -> onCreate
-    326:333:void kotlin.collections.CollectionsKt__CollectionsKt.throwIndexOverflow():0:0 -> onCreate
-    326:333:void configureSsl(android.webkit.WebView):0 -> onCreate
-    326:333:void onCreate(android.os.Bundle):0 -> onCreate
-    334:372:void configureSsl(android.webkit.WebView):0:0 -> onCreate
-    334:372:void onCreate(android.os.Bundle):0 -> onCreate
-    373:386:void kotlin.jvm.internal.Intrinsics.throwJavaNpe(java.lang.String):0:0 -> onCreate
-    373:386:void kotlin.jvm.internal.Intrinsics.checkNotNull(java.lang.Object,java.lang.String):0 -> onCreate
-    373:386:void configureSsl(android.webkit.WebView):0 -> onCreate
-    373:386:void onCreate(android.os.Bundle):0 -> onCreate
-    387:389:void configureSsl(android.webkit.WebView):0:0 -> onCreate
-    387:389:void onCreate(android.os.Bundle):0 -> onCreate
-    390:528:void onCreate(android.os.Bundle):0:0 -> onCreate
+    320:357:void configureSsl(android.webkit.WebView):0:0 -> onCreate
+    320:357:void onCreate(android.os.Bundle):0 -> onCreate
+    358:371:void kotlin.jvm.internal.Intrinsics.throwJavaNpe(java.lang.String):0:0 -> onCreate
+    358:371:void kotlin.jvm.internal.Intrinsics.checkNotNull(java.lang.Object,java.lang.String):0 -> onCreate
+    358:371:void configureSsl(android.webkit.WebView):0 -> onCreate
+    358:371:void onCreate(android.os.Bundle):0 -> onCreate
+    372:378:void configureSsl(android.webkit.WebView):0:0 -> onCreate
+    372:378:void onCreate(android.os.Bundle):0 -> onCreate
+    379:407:void onCreate(android.os.Bundle):0:0 -> onCreate
     6:24:void hideSystemUI():0:0 -> onWindowFocusChanged
     6:24:void onWindowFocusChanged(boolean):0 -> onWindowFocusChanged
-com.kt.webconteinerapp.MainActivity$$ExternalSyntheticLambda1 -> s1.f:
-# {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
-# {"id":"com.android.tools.r8.synthesized"}
-    3:13:boolean com.kt.webconteinerapp.MainActivity.onCreate$lambda$0(android.view.View,android.view.MotionEvent):0:0 -> onTouch
-    3:13:boolean com.kt.webconteinerapp.MainActivity$$InternalSyntheticLambda$1$ea80f62e9c01702ece840656c338698ed6684b49c9f5b1f4eba9d231cc79bf20$0.onTouch(android.view.View,android.view.MotionEvent):0 -> onTouch
-      # {"id":"com.android.tools.r8.synthesized"}
-com.kt.webconteinerapp.MainActivity$MyWebViewClient -> s1.g:
+com.kt.webconteinerapp.MainActivity$MyWebViewClient -> s1.f:
     android.widget.ProgressBar progressBar -> a
     com.kt.webconteinerapp.MainActivity this$0 -> b
     1:1:void <init>(com.kt.webconteinerapp.MainActivity,android.widget.ProgressBar):0:0 -> <init>
@@ -39766,7 +39759,7 @@ com.kt.webconteinerapp.MainActivity$MyWebViewClient -> s1.g:
     99:102:void onReceivedError(android.webkit.WebView,android.webkit.WebResourceRequest,android.webkit.WebResourceError):0:0 -> onReceivedError
     1:1:void onReceivedSslError(android.webkit.WebView,android.webkit.SslErrorHandler,android.net.http.SslError):0:0 -> onReceivedSslError
     1:1:boolean shouldOverrideUrlLoading(android.webkit.WebView,java.lang.String):0:0 -> shouldOverrideUrlLoading
-com.kt.webconteinerapp.MainActivity$onCreate$1 -> s1.h:
+com.kt.webconteinerapp.MainActivity$onCreate$1 -> s1.g:
     com.kt.webconteinerapp.MainActivity this$0 -> a
     1:1:void <init>(com.kt.webconteinerapp.MainActivity):0:0 -> <init>
     1:1:void onPermissionRequest(android.webkit.PermissionRequest):0:0 -> onPermissionRequest
@@ -39779,11 +39772,6 @@ com.kt.webconteinerapp.MainActivity$onCreate$1 -> s1.h:
     29:32:android.widget.ProgressBar com.kt.webconteinerapp.MainActivity.access$getProgressBar$p(com.kt.webconteinerapp.MainActivity):0:0 -> onProgressChanged
     29:32:void onProgressChanged(android.webkit.WebView,int):0 -> onProgressChanged
     33:63:void onProgressChanged(android.webkit.WebView,int):0:0 -> onProgressChanged
-com.kt.webconteinerapp.MainActivity$onCreate$2 -> s1.i:
-    java.lang.String $ambiente -> c
-    1:1:void <init>(com.kt.webconteinerapp.MainActivity,java.lang.String,kotlin.jvm.internal.Ref$ObjectRef,android.widget.ProgressBar):0:0 -> <init>
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lcom/kt/webconteinerapp/MainActivity;Ljava/lang/String;Lz1/b;Landroid/widget/ProgressBar;)V"}
-    1:1:void onReceivedHttpAuthRequest(android.webkit.WebView,android.webkit.HttpAuthHandler,java.lang.String,java.lang.String):0:0 -> onReceivedHttpAuthRequest
 kotlin.UninitializedPropertyAccessException -> t1.a:
 kotlin.collections.AbstractCollection -> u1.b:
     1:1:boolean add(java.lang.Object):0:0 -> add
