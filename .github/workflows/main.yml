@@ -39,19 +39,6 @@ jobs:
     - name: Set executable permissions
       run: chmod +x ./gradlew
 
-    - name: Install Android SDK
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wget unzip
-        mkdir -p $HOME/android-sdk/cmdline-tools
-        wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O commandlinetools.zip
-        unzip commandlinetools.zip -d $HOME/android-sdk/cmdline-tools
-        mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
-        export ANDROID_SDK_ROOT=$HOME/android-sdk
-        export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
-        yes | sdkmanager --licenses
-        sdkmanager "build-tools;30.0.3" "platforms;android-30"
-
     - name: Set up environment variables
       run: |
         if [[ ${{ github.event.inputs.environment }} == 'production' ]]; then
