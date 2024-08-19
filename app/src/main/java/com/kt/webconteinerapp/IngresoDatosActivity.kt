@@ -38,6 +38,13 @@ class IngresoDatosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ingreso_datos)
 
+        var pass = BuildConfig.PASSWORD
+        Log.e("PasswordContent", "La contraseña es: $pass")
+        var user = BuildConfig.DOMAIN_USER+"\\"+BuildConfig.USERNAME
+        Log.e("PasswordContent", "$user")
+        var p = BuildConfig.DOMAIN_SERVER_SUC
+        Log.e("PasswordContent", "$p")
+
 
         // Verificar si el permiso ya ha sido concedido
         if (ContextCompat.checkSelfPermission(

@@ -15,27 +15,34 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        buildConfigField "String", "USERNAME", "\"${System.getenv('SERVICE_USERNAME')?.replace("\"", "\\\"") ?: ""}\""
+        buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD')?.replace("\"", "\\\"") ?: ""}\""
+        buildConfigField "String", "DOMAIN_SERVER_SUC", "\"${System.getenv('DOMAIN_SERVER_SUC')?.replace("\"", "\\\"") ?: ""}\""
+        buildConfigField "String", "DOMAIN_USER", "\"${System.getenv('DOMAIN_USER')?.replace("\"", "\\\"") ?: ""}\""
+
         ndk {
             // Incluye todas las arquitecturas necesarias
             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
     }
 
-    buildTypes {
-        debug {
-            /*buildConfigField "String", "USERNAME", "\"usuarioDesarrollo\""
-            buildConfigField "String", "PASSWORD", "\"contraseñaDesarrollo\""*/
-            buildConfigField "String", "USERNAME", "\"${System.getenv('USERNAME_PROD')?.replace("\"", "\\\"") ?: ""}\""
-            buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD_PROD')?.replace("\"", "\\\"") ?: ""}\""
-        }
-        release {
-            buildConfigField "String", "USERNAME", "\"${System.getenv('USERNAME_PROD')?.replace("\"", "\\\"") ?: ""}\""
-            buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD_PROD')?.replace("\"", "\\\"") ?: ""}\""
+ /*   buildTypes {
+        custom {
+            buildConfigField "String", "USERNAME_DESA", userDesa
+            buildConfigField "String", "PASSWORD_DESA", passDesa
+*//*          buildConfigField "String", "USERNAME_DESA", "\"${System.getenv('USERNAME_PROD')?.replace("\"", "\\\"") ?: ""}\""
+            buildConfigField "String", "PASSWORD_DESA", "\"${System.getenv('PASSWORD_PROD')?.replace("\"", "\\\"") ?: ""}\""*//*
+
+            buildConfigField "String", "USERNAME_TEST", "\"${System.getenv('USERNAME_TEST')?.replace("\"", "\\\"") ?: ""}\""
+            buildConfigField "String", "PASSWORD_TEST", "\"${System.getenv('USERNAME_TEST')?.replace("\"", "\\\"") ?: ""}\""
+
+            buildConfigField "String", "USERNAME_PROD", "\"${System.getenv('USERNAME_PROD')?.replace("\"", "\\\"") ?: ""}\""
+            buildConfigField "String", "PASSWORD_PROD", "\"${System.getenv('PASSWORD_PROD')?.replace("\"", "\\\"") ?: ""}\""
 
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
+    }*/
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
