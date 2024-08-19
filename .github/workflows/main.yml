@@ -85,7 +85,8 @@ jobs:
         PASSWORD: ${{ env.PASSWORD }}
         DOMAIN_SERVER_SUC: ${{ env.DOMAIN_SERVER_SUC }}
         DOMAIN_USER: ${{ env.DOMAIN_USER }}
-
+      run: ./gradlew assembleRelease --info --stacktrace -x lint
+      
     - name: Debugging information
       run: |
         echo "Classpath:"
