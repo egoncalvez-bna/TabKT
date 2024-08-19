@@ -73,7 +73,10 @@ jobs:
         DOMAIN_SERVER_SUC: ${{ env.DOMAIN_SERVER_SUC }}
         DOMAIN_USER: ${{ env.DOMAIN_USER }}
       run: ./gradlew assembleRelease --info --stacktrace -x lint
-      
+    - name: Debug environment variables1
+      run: |
+        echo "Printing all environment variables..."
+        printenv
     - name: Debugging information
       run: |
         echo "Classpath:"
