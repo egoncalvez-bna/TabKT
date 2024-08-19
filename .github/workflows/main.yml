@@ -71,8 +71,8 @@ jobs:
           echo "PASSWORD=${{ secrets.PASSWORD_DESA }}" >> $GITHUB_ENV
         fi
 
-    - name: Install dependencies
-      run: ./gradlew clean build --refresh-dependencies
+    - name: Debug environment variables
+      run: cat $GITHUB_ENV
 
     - name: List JAR files
       run: find . -name "*.jar"
