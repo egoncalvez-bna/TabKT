@@ -42,8 +42,7 @@ jobs:
     - name: Set up environment variables
       run: echo "SERVICE_USERNAME_TEST=${{ env.SERVICE_USERNAME_TEST }}" >> $GITHUB_ENV
 
-    - name: Print SERVICE_USERNAME_TEST
-      run: echo "SERVICE_USERNAME_TEST: $SERVICE_USERNAME_TEST"
+
 
     - name: Set up environment variables
       run: |
