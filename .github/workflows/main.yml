@@ -11,16 +11,7 @@ on:
       - master
       - testing
       - develop
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Specify the environment for the build'
-        required: true
-        default: 'production'
-        options:
-          - production
-          - testing
-          - development
+  workflow_dispatch: # Permite la ejecución manual del workflow sin entradas
 
 jobs:
   build:
@@ -54,17 +45,17 @@ jobs:
 
     - name: Set up environment variables
       run: |
-        if [[ ${{ github.event.inputs.environment }} == 'production' ]]; then
+        if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
           echo "DOMAIN_SERVER_SUC=${{ secrets.DOMAIN_SERVER_SUC_PROD }}" >> $GITHUB_ENV
           echo "DOMAIN_USER=${{ secrets.DOMAIN_USER_PROD }}" >> $GITHUB_ENV
           echo "SERVICE_USERNAME=${{ secrets.SERVICE_USERNAME_PROD }}" >> $GITHUB_ENV
           echo "PASSWORD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
-        elif [[ ${{ github.event.inputs.environment }} == 'testing' ]]; then
+        elif [[ ${{ github.ref }} == 'refs/heads/testing' ]]; then
           echo "DOMAIN_SERVER_SUC=${{ secrets.DOMAIN_SERVER_SUC_TEST }}" >> $GITHUB_ENV
           echo "DOMAIN_USER=${{ secrets.DOMAIN_USER_TEST }}" >> $GITHUB_ENV
           echo "SERVICE_USERNAME=${{ secrets.SERVICE_USERNAME_TEST }}" >> $GITHUB_ENV
           echo "PASSWORD=${{ secrets.PASSWORD_TEST }}" >> $GITHUB_ENV
-        elif [[ ${{ github.event.inputs.environment }} == 'development' ]]; then
+        elif [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
           echo "DOMAIN_SERVER_SUC=${{ secrets.DOMAIN_SERVER_SUC_DESA }}" >> $GITHUB_ENV
           echo "DOMAIN_USER=${{ secrets.DOMAIN_USER_DESA }}" >> $GITHUB_ENV
           echo "SERVICE_USERNAME=${{ secrets.SERVICE_USERNAME_DESA }}" >> $GITHUB_ENV
