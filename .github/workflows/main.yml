@@ -54,6 +54,7 @@ jobs:
 
     - name: Set up environment variables
       run: |
+        echo "Environment input: ${{ github.event.inputs.environment }}"
         case ${{ github.event.inputs.environment }} in
           production)
             echo "DOMAIN_SERVER_SUC=${{ vars.DOMAIN_SERVER_SUC_PROD }}" >> $GITHUB_ENV
