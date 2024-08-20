@@ -54,27 +54,39 @@ jobs:
 
     - name: Set up environment variables
       run: |
-        if [[ ${{ github.event.inputs.environment }} == 'production' ]]; then
-          echo "DOMAIN_SERVER_SUC=${{ vars.DOMAIN_SERVER_SUC_PROD }}" >> $GITHUB_ENV
-          echo "DOMAIN_USER=${{ vars.DOMAIN_USER_PROD }}" >> $GITHUB_ENV
-          echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_PROD }}" >> $GITHUB_ENV
-          echo "PASSWORD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
-        elif [[ ${{ github.event.inputs.environment }} == 'testing' ]]; then
-          echo "DOMAIN_SERVER_SUC=${{ vars.DOMAIN_SERVER_SUC_TEST }}" >> $GITHUB_ENV
-          echo "DOMAIN_USER=${{ vars.DOMAIN_USER_TEST }}" >> $GITHUB_ENV
-          echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_TEST }}" >> $GITHUB_ENV
-          echo "PASSWORD=${{ secrets.PASSWORD_TEST }}" >> $GITHUB_ENV
-        elif [[ ${{ github.event.inputs.environment }} == 'development' ]]; then
-          echo "DOMAIN_SERVER_SUC=${{ vars.DOMAIN_SERVER_SUC_DESA }}" >> $GITHUB_ENV
-          echo "DOMAIN_USER=${{ vars.DOMAIN_USER_DESA }}" >> $GITHUB_ENV
-          echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_DESA }}" >> $GITHUB_ENV
-          echo "PASSWORD=${{ secrets.PASSWORD_DESA }}" >> $GITHUB_ENV
-        fi
+        case ${{ github.event.inputs.environment }} in
+          production)
+            echo "DOMAIN_SERVER_SUC=${{ vars.DOMAIN_SERVER_SUC_PROD }}" >> $GITHUB_ENV
+            echo "DOMAIN_USER=${{ vars.DOMAIN_USER_PROD }}" >> $GITHUB_ENV
+            echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_PROD }}" >> $GITHUB_ENV
+            echo "PASSWORD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
+            export APK_NAME="app-production-release.apk"
+            ;;
+          testing)
+            echo "DOMAIN_SERVER_SUC=${{ vars.DOMAIN_SERVER_SUC_TEST }}" >> $GITHUB_ENV
+            echo "DOMAIN_USER=${{ vars.DOMAIN_USER_TEST }}" >> $GITHUB_ENV
+            echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_TEST }}" >> $GITHUB_ENV
+            echo "PASSWORD=${{ secrets.PASSWORD_TEST }}" >> $GITHUB_ENV
+            export APK_NAME="app-testing-release.apk"
+            ;;
+          development)
+            echo "DOMAIN_SERVER_SUC=${{ vars.DOMAIN_SERVER_SUC_DESA }}" >> $GITHUB_ENV
+            echo "DOMAIN_USER=${{ vars.DOMAIN_USER_DESA }}" >> $GITHUB_ENV
+            echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_DESA }}" >> $GITHUB_ENV
+            echo "PASSWORD=${{ secrets.PASSWORD_DESA }}" >> $GITHUB_ENV
+            export APK_NAME="app-development-release.apk"
+            ;;
+          *)
+            echo "Invalid environment: ${{ github.event.inputs.environment }}" >&2
+            exit 1
+            ;;
+        esac
 
     - name: Debug environment variables
       run: |
         echo "Printing all environment variables..."
         printenv
+
     - name: List JAR files
       run: find . -name "*.jar"
 
@@ -87,12 +99,15 @@ jobs:
         DOMAIN_USER: ${{ env.DOMAIN_USER }}
       run: ./gradlew assembleRelease --info --stacktrace -x lint
       
+    - name: Rename APK
+      run: mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/${{ env.APK_NAME }}
+
     - name: Debugging information
       run: |
         echo "Classpath:"
         ./gradlew -q dependencies app:dependencies --configuration releaseRuntimeClasspath
         echo "Checking APK contents:"
-        unzip -l app/build/outputs/apk/release/app-release-unsigned.apk 
+        unzip -l app/build/outputs/apk/release/${{ env.APK_NAME }}
 
     - name: List APK files
       run: ls -la app/build/outputs/apk/release/
@@ -101,5 +116,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: release-apk
-        path: app/build/outputs/apk/release/app-release-unsigned.apk
+        path: app/build/outputs/apk/release/${{ env.APK_NAME }}
         if-no-files-found: error
