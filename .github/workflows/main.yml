@@ -101,7 +101,9 @@ jobs:
       run: ./gradlew assembleRelease --info --stacktrace -x lint
       
     - name: Rename APK
-      run: mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/${{ env.APK_NAME }}
+      run: |
+        echo "Environment input: ${{ env.APK_NAME }}"
+        mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/${{ env.APK_NAME }}
 
     - name: Debugging information
       run: |
