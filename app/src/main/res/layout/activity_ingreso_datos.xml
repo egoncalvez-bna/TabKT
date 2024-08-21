@@ -110,24 +110,7 @@
             android:textColorHint="#FFD8D4D4"
             android:textSize="14pt" />
 
-        <TextView
-            android:id="@+id/TextViewAmbiente"
-            android:layout_width="540dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:text="Ambiente:"
-            android:textColor="#FFFFFF"
-            android:textSize="15pt" />
 
-        <Spinner
-            android:id="@+id/environmentSpinner"
-            android:layout_width="560dp"
-            android:layout_height="55dp"
-            android:layout_gravity="center"
-            android:autofillHints=""
-            android:backgroundTint="#FFFFFF"
-            android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/ButtonGuardar"

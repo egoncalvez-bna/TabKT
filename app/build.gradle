@@ -8,7 +8,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId 'com.kt.webconteinerapp9'
+        applicationId 'com.kt.webconteinerapp10'
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -68,6 +68,7 @@ android {
         pickFirst 'Libs/BNACryptoLib_0.1.jar'
         pickFirst 'Libs/BNAWGet.jar'
     }
+    buildToolsVersion '33.0.1'
 }
 
 dependencies {

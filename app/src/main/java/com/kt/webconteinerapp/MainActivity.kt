@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         val preferences = getSharedPreferences("mis_preferencias", Context.MODE_PRIVATE)
         val nombreEquipo = preferences.getString("nombreEquipo", "")
         val nombreServidor = preferences.getString("nombreServidor", "")
-        val ambiente = preferences.getString("ambiente", "")
+        //val ambiente = preferences.getString("ambiente", "")
         Log.e("DeviceInfo", "Valor guardado: $nombreEquipo")
 
         super.onCreate(savedInstanceState)

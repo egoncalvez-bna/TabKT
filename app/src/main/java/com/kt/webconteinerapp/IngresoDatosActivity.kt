@@ -38,14 +38,6 @@ class IngresoDatosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ingreso_datos)
 
-        var pass = BuildConfig.PASSWORD
-        Log.e("PasswordContent", "La contraseña es: $pass")
-        var user = BuildConfig.DOMAIN_USER+"\\"+BuildConfig.USERNAME
-        Log.e("PasswordContent", "$user")
-        var p = BuildConfig.DOMAIN_SERVER_SUC
-        Log.e("PasswordContent", "$p")
-
-
         // Verificar si el permiso ya ha sido concedido
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -78,36 +70,10 @@ class IngresoDatosActivity : AppCompatActivity() {
             }
         }
 
-        // Obtener el Spinner
-        val environmentSpinner: Spinner = findViewById(R.id.environmentSpinner)
 
-        // Crear un ArrayAdapter usando el array de strings y un diseño de spinner por defecto
-        ArrayAdapter.createFromResource(
-            this, R.array.environments_array, android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Especificar el layout que se usará cuando la lista de opciones aparezca
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Aplicar el adaptador al spinner
-            environmentSpinner.adapter = adapter
-        }
 
-        var ambienteSeleccionado = ""
-        // Cambiar el color de la opción seleccionada a blanco
-        environmentSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>, view: View?, position: Int, id: Long
-            ) {
-                if (view is TextView) {
-                    view.setTextColor(resources.getColor(android.R.color.white))
-                    view.textSize = 22f
-                    ambienteSeleccionado = parent.getItemAtPosition(position).toString()
-                }
-            }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Otra acción cuando no se selecciona nada
-            }
-        }
+
         // Obtener el EditText
         val nombreDispositivoEditText: EditText = findViewById(R.id.EditTextName)
 
@@ -201,7 +167,9 @@ class IngresoDatosActivity : AppCompatActivity() {
                     val nombreCompleto = "T" + nroTablet + "SC" + nroSucursal
 
                     val nombreServidor =
-                        resolverNombreServidor(nroTablet, nroSucursal, ambienteSeleccionado)
+                        resolverNombreServidor(nroTablet, nroSucursal)
+
+                    Log.d("Variables", "nombreServidor: $nroTablet")
 
                     if (nombreServidor == "ERROR") {
                         showAlertDialog("No es posible conectarse al servidor, ¿se encuentra conectado a la red wifi correcta?")
@@ -218,7 +186,6 @@ class IngresoDatosActivity : AppCompatActivity() {
                         // Guardar el dato con una clave específica
                         editor.putString("nombreEquipo", nombreCompleto)
                         editor.putString("nombreServidor", nombreServidor)
-                        editor.putString("ambiente", ambienteSeleccionado)
                         // Aplicar los cambios
                         editor.apply()
 
@@ -233,52 +200,40 @@ class IngresoDatosActivity : AppCompatActivity() {
     }
 
 
-    fun resolverNombreServidor(nombreTablet: String, numeroSuc: String, ambiente: String): String {
-        Log.d("Variables", "ambiente: $ambiente")
+    fun resolverNombreServidor(nombreTablet: String, numeroSuc: String): String {
 
+        var ambiente = BuildConfig.DOMAIN_SERVER_SUC
         val sucursalServidor = when (ambiente) {
-            "Producción" -> {
+            //PRODUCCION
+            "SUC" -> {
                 if (numeroSuc == "0085") {
                     "SNL01SC0085.SUC.BNA.NET"
                 } else {
-                    if (getPingResponse("SMF01SC${numeroSuc}.SUC.BNA.NET")) {
-                        "SMF01SC${numeroSuc}.SUC.BNA.NET"
-                    } else if (getPingResponse("SMF02SC${numeroSuc}.SUC.BNA.NET")) {
-                        "SMF02SC${numeroSuc}.SUC.BNA.NET"
-                    } else "ERROR"
+                        "DM01${numeroSuc}.SUC.BNA.NET"
                 }
             }
-
-            "Testing" -> {
+            //TESTING
+            "TSUC" -> {
                 when (numeroSuc) {
                     "0085" -> "TNL01SC0085.TSUC.TBNA.NET"
                     "0064" -> "TMF02SC6021.TSUC.TBNA.NET"
                     "0070" -> "TMF02SC6020.TSUC.TBNA.NET"
                     else -> {
-                        if (getPingResponse("TMF01SC${numeroSuc}.TSUC.TBNA.NET")) {
-                            "TMF01SC${numeroSuc}.TSUC.TBNA.NET"
-                        } else if (getPingResponse("TMF02SC${numeroSuc}.TSUC.TBNA.NET")) {
-                            "TMF02SC${numeroSuc}.TSUC.TBNA.NET"
-                        } else "ERROR"
+                        "DM01${numeroSuc}.TSUC.BNA.NET"
                     }
                 }
             }
-
-            "Desarrollo" -> {
+            //DESARROLLO
+            "DSUC" -> {
 //                if (numeroSuc == "0085" || numeroSuc == "6220") {
                 if (numeroSuc == "0085") {
                     "dap13cc0001.DCC.DBNA.NET"
                 } else if (numeroSuc == "6220") {
                     "dmf01sc6220.dsuc.dbna.net"
                 } else {
-                    if (isReachableBySocket("DMF02SC${numeroSuc}.DSUC.DBNA.NET")) {
-                        "DMF02SC${numeroSuc}.DSUC.DBNA.NET"
-                    } else if (isReachableBySocket("DMF01SC${numeroSuc}.DSUC.DBNA.NET")) {
-                        "DMF01SC${numeroSuc}.DSUC.DBNA.NET"
-                    } else "ERROR"
+                    "DM01${numeroSuc}.DSUC.BNA.NET"
                 }
             }
-
             else -> {
                 "ERROR"
             }
