@@ -106,6 +106,10 @@ class MainActivity : AppCompatActivity() {
 
         var pass = BuildConfig.PASSWORD
         Log.e("PasswordContent", "La contraseña es: $pass")
+        var user = BuildConfig.DOMAIN_USER+"\\"+BuildConfig.USERNAME
+        Log.e("PasswordContent", "$user")
+        var p = BuildConfig.DOMAIN_SERVER_SUC
+        Log.e("PasswordContent", "$p")
 
         if (pass.isNullOrEmpty()) {
             // Manejar el caso en el que la contraseña es nula o vacía
@@ -123,7 +127,7 @@ class MainActivity : AppCompatActivity() {
                 host: String,
                 realm: String
             ) {
-                val username = when (ambiente) {
+/*                val username = when (ambiente) {
                     "Producción" -> "CC\\H00097"
                     "Testing" -> "TCC\\H00097"
                     "Desarrollo" -> "DCC\\H00097"
@@ -131,7 +135,9 @@ class MainActivity : AppCompatActivity() {
                     else -> {
                         "CC\\H00097"
                     }
-                }
+                }*/
+                val username = BuildConfig.DOMAIN_USER+"\\"+BuildConfig.USERNAME
+
                 var password =""
                 try {
                     val crypto = CryptoProvider.getProvider().simCrypto
@@ -150,6 +156,12 @@ class MainActivity : AppCompatActivity() {
         myWebView.setOnTouchListener { _, event -> event.actionMasked == MotionEvent.ACTION_MOVE }
     }
 
+    fun sendError(error:String)
+    {
+        val intent = Intent(this, ErroresActivity::class.java)
+        intent.putExtra("EXTRA_TEXT", error)
+        startActivity(intent)
+    }
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
