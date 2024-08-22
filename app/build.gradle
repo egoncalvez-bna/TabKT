@@ -15,6 +15,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+
         buildConfigField "String", "USERNAME", "\"${System.getenv('SERVICE_USERNAME')?.replace("\"", "\\\"") ?: ""}\""
         buildConfigField "String", "PASSWORD", "\"${System.getenv('PASSWORD')?.replace("\"", "\\\"") ?: ""}\""
         buildConfigField "String", "DOMAIN_SERVER_SUC", "\"${System.getenv('DOMAIN_SERVER_SUC')?.replace("\"", "\\\"") ?: ""}\""
