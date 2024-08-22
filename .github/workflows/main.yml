@@ -104,4 +104,171 @@ jobs:
           path: app/build/outputs/apk/release/${{ env.APK_NAME }}
           if-no-files-found: error
 
-  # Repite los mismos pasos para testing y development como se hizo con production.
+  build-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set executable permissions
+        run: chmod +x ./gradlew
+
+      - name: Install Android SDK
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O commandlinetools.zip
+          unzip commandlinetools.zip -d $HOME/android-sdk/cmdline-tools
+          mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
+          export ANDROID_SDK_ROOT=$HOME/android-sdk
+          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+          yes | sdkmanager --licenses
+          sdkmanager "build-tools;30.0.3" "platforms;android-30"
+
+      - name: Set up environment variables for testing build
+        run: |
+          echo "DOMAIN_SERVER_SUC=${{ vars.DOMAIN_SERVER_SUC_TEST }}" >> $GITHUB_ENV
+          echo "DOMAIN_USER=${{ vars.DOMAIN_USER_TEST }}" >> $GITHUB_ENV
+          echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_TEST }}" >> $GITHUB_ENV
+          echo "PASSWORD=${{ secrets.PASSWORD_TEST }}" >> $GITHUB_ENV
+          echo "APK_NAME=Totem-KT-T.apk" >> $GITHUB_ENV
+
+      - name: Prepare JKS for signing
+        run: |
+          echo "${{ secrets.SIGNING_KEY }}" | base64 --decode > TabKT1.jks
+          echo "SIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "SIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> $GITHUB_ENV
+          echo "SIGNING_STORE_PASSWORD=${{ secrets.SIGNING_STORE_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Debug environment variables
+        run: printenv
+
+      - name: List JAR files
+        run: find . -name "*.jar"
+
+      - name: Build the app
+        shell: bash
+        env:
+          SERVICE_USERNAME: ${{ env.SERVICE_USERNAME }}
+          PASSWORD: ${{ env.PASSWORD }}
+          DOMAIN_SERVER_SUC: ${{ env.DOMAIN_SERVER_SUC }}
+          DOMAIN_USER: ${{ env.DOMAIN_USER }}
+          SIGNING_KEY_ALIAS: ${{ env.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ env.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ env.SIGNING_STORE_PASSWORD }}
+        run: ./gradlew assembleRelease --info --stacktrace -x lint
+
+      - name: Sign the APK
+        run: |
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+          -keystore TabKT1.jks \
+          -storepass ${{ env.SIGNING_STORE_PASSWORD }} \
+          -keypass ${{ env.SIGNING_KEY_PASSWORD }} \
+          app/build/outputs/apk/release/app-release-unsigned.apk ${{ env.SIGNING_KEY_ALIAS }}
+
+      - name: List APKs
+        run: |
+          for file in app/build/outputs/apk/release/*; do
+          echo "Found file: $file"
+          done
+          
+      - name: Rename APK
+        run: mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/${{ env.APK_NAME }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: testing-apk
+          path: app/build/outputs/apk/release/${{ env.APK_NAME }}
+          if-no-files-found: error
+
+  build-development:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set executable permissions
+        run: chmod +x ./gradlew
+
+      - name: Install Android SDK
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O commandlinetools.zip
+          unzip commandlinetools.zip -d $HOME/android-sdk/cmdline-tools
+          mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
+          export ANDROID_SDK_ROOT=$HOME/android-sdk
+          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+          yes | sdkmanager --licenses
+          sdkmanager "build-tools;30.0.3" "platforms;android-30"
+
+      - name: Set up environment variables for development build
+        run: |
+          echo "DOMAIN_SERVER_SUC=${{ vars.DOMAIN_SERVER_SUC_DESA }}" >> $GITHUB_ENV
+          echo "DOMAIN_USER=${{ vars.DOMAIN_USER_DESA }}" >> $GITHUB_ENV
+          echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_DESA }}" >> $GITHUB_ENV
+          echo "PASSWORD=${{ secrets.PASSWORD_DESA }}" >> $GITHUB_ENV
+          echo "APK_NAME=Totem-KT-D.apk" >> $GITHUB_ENV
+
+      - name: Prepare JKS for signing
+        run: |
+          echo "${{ secrets.SIGNING_KEY }}" | base64 --decode > TabKT1.jks
+          echo "SIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "SIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> $GITHUB_ENV
+          echo "SIGNING_STORE_PASSWORD=${{ secrets.SIGNING_STORE_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Debug environment variables
+        run: printenv
+
+      - name: List JAR files
+        run: find . -name "*.jar"
+
+      - name: Build the app
+        shell: bash
+        env:
+          SERVICE_USERNAME: ${{ env.SERVICE_USERNAME }}
+          PASSWORD: ${{ env.PASSWORD }}
+          DOMAIN_SERVER_SUC: ${{ env.DOMAIN_SERVER_SUC }}
+          DOMAIN_USER: ${{ env.DOMAIN_USER }}
+          SIGNING_KEY_ALIAS: ${{ env.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ env.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ env.SIGNING_STORE_PASSWORD }}
+        run: ./gradlew assembleRelease --info --stacktrace -x lint
+
+      - name: Sign the APK
+        run: |
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+          -keystore TabKT1.jks \
+          -storepass ${{ env.SIGNING_STORE_PASSWORD }} \
+          -keypass ${{ env.SIGNING_KEY_PASSWORD }} \
+          app/build/outputs/apk/release/app-release-unsigned.apk ${{ env.SIGNING_KEY_ALIAS }}
+
+      - name: List APKs
+        run: |
+          for file in app/build/outputs/apk/release/*; do
+          echo "Found file: $file"
+          done
+          
+      - name: Rename APK
+        run: mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/${{ env.APK_NAME }}
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: development-apk
+          path: app/build/outputs/apk/release/${{ env.APK_NAME }}
+          if-no-files-found: error
