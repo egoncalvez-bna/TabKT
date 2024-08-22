@@ -224,6 +224,11 @@ jobs:
           echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_DESA }}" >> $GITHUB_ENV
           echo "PASSWORD=${{ secrets.PASSWORD_DESA }}" >> $GITHUB_ENV
           echo "APK_NAME=Totem-KT-D.apk" >> $GITHUB_ENV
+          echo "APPLICATION_ID=com.kt.webconteinerapp-D" >> $GITHUB_ENV
+
+      - name: Modify build.gradle
+        run: |
+          sed -i 's/applicationId "com.kt.webconteinerapp"/applicationId "${{ env.APPLICATION_ID }}"/' app/build.gradle
 
       - name: Prepare JKS for signing
         run: |
