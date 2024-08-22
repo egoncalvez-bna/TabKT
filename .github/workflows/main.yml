@@ -81,7 +81,13 @@ jobs:
           -storepass ${{ env.SIGNING_STORE_PASSWORD }} \
           -keypass ${{ env.SIGNING_KEY_PASSWORD }} \
           app/build/outputs/apk/release/app-release-unsigned.apk ${{ env.SIGNING_KEY_ALIAS }}
-
+    
+      - name: List APKs
+        run: |
+          for file in app/build/outputs/apk/release/*; do
+          echo "Found file: $file"
+          done
+          
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
