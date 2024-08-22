@@ -82,12 +82,6 @@ jobs:
           -keypass ${{ env.SIGNING_KEY_PASSWORD }} \
           app/build/outputs/apk/release/app-release-unsigned.apk ${{ env.SIGNING_KEY_ALIAS }}
 
-      - name: Align APK (optional but recommended)
-        run: |
-          $ANDROID_SDK_ROOT/build-tools/30.0.3/zipalign -v -p 4 \
-          app/build/outputs/apk/release/app-release-unsigned.apk \
-          app/build/outputs/apk/release/${{ env.APK_NAME }}
-
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
