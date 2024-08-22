@@ -55,6 +55,11 @@ jobs:
           echo "SIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}" >> $GITHUB_ENV
           echo "SIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> $GITHUB_ENV
           echo "SIGNING_STORE_PASSWORD=${{ secrets.SIGNING_STORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "APPLICATION_ID=com.kt.webconteinerapp-P" >> $GITHUB_ENV
+
+      - name: Modify build.gradle
+        run: |
+          sed -i 's/applicationId "com.kt.webconteinerapp"/applicationId "${{ env.APPLICATION_ID }}"/' app/build.gradle
 
       - name: Debug environment variables
         run: printenv
@@ -146,6 +151,11 @@ jobs:
           echo "SIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}" >> $GITHUB_ENV
           echo "SIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> $GITHUB_ENV
           echo "SIGNING_STORE_PASSWORD=${{ secrets.SIGNING_STORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "APPLICATION_ID=com.kt.webconteinerapp-T" >> $GITHUB_ENV
+
+      - name: Modify build.gradle
+        run: |
+          sed -i 's/applicationId "com.kt.webconteinerapp"/applicationId "${{ env.APPLICATION_ID }}"/' app/build.gradle
 
       - name: Debug environment variables
         run: printenv
