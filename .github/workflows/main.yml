@@ -41,7 +41,8 @@ jobs:
           export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
           yes | sdkmanager --licenses
           sdkmanager "build-tools;30.0.3" "platforms;android-30"
-
+          sdkmanager --install "build-tools;30.0.3"
+          
       - name: Set up environment variables for production build
         run: |
           echo "DOMAIN_SERVER_SUC=${{ vars.DOMAIN_SERVER_SUC_PROD }}" >> $GITHUB_ENV
