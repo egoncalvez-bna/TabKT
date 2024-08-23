@@ -90,7 +90,10 @@ jobs:
       - name: Sign the APK
         run: |
           $ANDROID_SDK_ROOT/build-tools/30.0.3/apksigner sign --ks TabKT1.jks --ks-pass pass:${{ env.SIGNING_STORE_PASSWORD }} --key-pass pass:${{ env.SIGNING_KEY_PASSWORD }} --out app/build/outputs/apk/release/${{ env.APK_NAME }} app/build/outputs/apk/release/app-release-unsigned.apk
-          
+      
+      - name: List build tools
+        run: ls $ANDROID_SDK_ROOT/build-tools/30.0.3/
+
       - name: Verify APK Signature
         run: |
           $ANDROID_SDK_ROOT/build-tools/30.0.3/apksigner verify app/build/outputs/apk/release/${{ env.APK_NAME }}
