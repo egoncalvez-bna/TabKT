@@ -80,13 +80,20 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ env.SIGNING_STORE_PASSWORD }}
         run: ./gradlew assembleRelease --info --stacktrace -x lint
 
+      - name: List APKs
+        run: |
+          for file in app/build/outputs/apk/release/*; do
+          echo "Found file: $file"
+          done
+          
       - name: Sign the APK
         run: |
-          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
-          -keystore TabKT1.jks \
-          -storepass ${{ env.SIGNING_STORE_PASSWORD }} \
-          -keypass ${{ env.SIGNING_KEY_PASSWORD }} \
-          app/build/outputs/apk/release/app-release-unsigned.apk ${{ env.SIGNING_KEY_ALIAS }}
+          $ANDROID_SDK_ROOT/build-tools/30.0.3/apksigner sign --ks TabKT1.jks --ks-pass pass:${{ env.SIGNING_STORE_PASSWORD }} --key-pass pass:${{ env.SIGNING_KEY_PASSWORD }} --out app/build/outputs/apk/release/${{ env.APK_NAME }} app/build/outputs/apk/release/app-release-unsigned.apk
+          
+      - name: Verify APK Signature
+        run: |
+          $ANDROID_SDK_ROOT/build-tools/30.0.3/apksigner verify app/build/outputs/apk/release/${{ env.APK_NAME }}
+
 
       - name: List APKs
         run: |
@@ -94,8 +101,8 @@ jobs:
           echo "Found file: $file"
           done
           
-      - name: Rename APK
-        run: mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/${{ env.APK_NAME }}
+ #     - name: Rename APK
+ #       run: mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/${{ env.APK_NAME }}
 
       - name: List APKs
         run: |
