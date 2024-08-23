@@ -52,7 +52,7 @@ jobs:
           echo "APK_NAME=Totem-KT-P.apk" >> $GITHUB_ENV
       
       - name: List build tools
-        run: ls $ANDROID_SDK_ROOT/build-tools/30.0.3/
+        run: ls $ANDROID_SDK_ROOT/build-tools
       
       - name: Prepare JKS for signing
         run: |
