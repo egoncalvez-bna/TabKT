@@ -8,7 +8,8 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId 'com.kt.webconteinerapp'
+        //applicationId 'com.kt.webconteinerapp'
+        applicationId = System.getenv("APPLICATION_ID") ?: "com.kt.webconteinerapp"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -23,6 +24,7 @@ android {
         buildConfigField "String", "SIGNING_KEY_ALIAS", "\"${System.getenv('SIGNING_KEY_ALIAS')?.replace("\"", "\\\"") ?: ""}\""
         buildConfigField "String", "SIGNING_KEY_PASSWORD", "\"${System.getenv('SIGNING_KEY_PASSWORD')?.replace("\"", "\\\"") ?: ""}\""
         buildConfigField "String", "SIGNING_STORE_PASSWORD", "\"${System.getenv('SIGNING_STORE_PASSWORD')?.replace("\"", "\\\"") ?: ""}\""
+        buildConfigField "String", "APPLICATION_ID", "\"${System.getenv('APPLICATION_ID')?.replace("\"", "\\\"") ?: ""}\""
 
         ndk {
             // Incluye todas las arquitecturas necesarias
