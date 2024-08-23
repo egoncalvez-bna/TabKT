@@ -60,7 +60,7 @@ jobs:
           echo "SIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}" >> $GITHUB_ENV
           echo "SIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> $GITHUB_ENV
           echo "SIGNING_STORE_PASSWORD=${{ secrets.SIGNING_STORE_PASSWORD }}" >> $GITHUB_ENV
-          echo "APPLICATION_ID=com.kt.webconteinerapp-P" >> $GITHUB_ENV
+          echo "APPLICATION_ID=com.kt.webconteinerapp.P" >> $GITHUB_ENV
 
       - name: Modify build.gradle
         run: |
@@ -154,7 +154,7 @@ jobs:
           echo "SIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}" >> $GITHUB_ENV
           echo "SIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> $GITHUB_ENV
           echo "SIGNING_STORE_PASSWORD=${{ secrets.SIGNING_STORE_PASSWORD }}" >> $GITHUB_ENV
-          echo "APPLICATION_ID=com.kt.webconteinerapp-T" >> $GITHUB_ENV
+          echo "APPLICATION_ID=com.kt.webconteinerapp.T" >> $GITHUB_ENV
 
       - name: Modify build.gradle
         run: |
@@ -234,7 +234,7 @@ jobs:
           echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_DESA }}" >> $GITHUB_ENV
           echo "PASSWORD=${{ secrets.PASSWORD_DESA }}" >> $GITHUB_ENV
           echo "APK_NAME=Totem-KT-D.apk" >> $GITHUB_ENV
-          echo "APPLICATION_ID=com.kt.webconteinerapp-D" >> $GITHUB_ENV
+          echo "APPLICATION_ID=com.kt.webconteinerapp.D" >> $GITHUB_ENV
 
       - name: Modify build.gradle
         run: |
