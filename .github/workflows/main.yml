@@ -50,7 +50,10 @@ jobs:
           echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_PROD }}" >> $GITHUB_ENV
           echo "PASSWORD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
           echo "APK_NAME=Totem-KT-P.apk" >> $GITHUB_ENV
-
+      
+      - name: List build tools
+        run: ls $ANDROID_SDK_ROOT/build-tools/30.0.3/
+      
       - name: Prepare JKS for signing
         run: |
           echo "${{ secrets.SIGNING_KEY }}" | base64 --decode > TabKT1.jks
