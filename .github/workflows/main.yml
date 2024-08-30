@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - Test
+  workflow_dispatch:
 
 jobs:
   build-production:
