@@ -224,109 +224,111 @@ class IngresoDatosActivity : AppCompatActivity() {
             "DSUC" -> {
                 if (numeroSuc == "0085") {
                     "dm010085.dcc.dbna.net"
+                } else if (numeroSuc == "0074") {
+                    "dm016220.dsuc.dbna.net"
                 } else {
                     "dm01${numeroSuc}.dsuc.dbna.net"
                 }
             }
 
-            else -> {
-                ""
-            }
-        }
-
-        return sucursalServidor
-    }
-
-    private fun validateIP(ip: String?): Boolean {
-        if (ip == null) {
-            return false
-        }
-        return ip.startsWith("10.") || ip.startsWith("172.")
-    }
-
-
-    private fun getPingResponse(address: String): Boolean {
-        return try {
-            val process = Runtime.getRuntime().exec("/system/bin/ping -c 1 -w 5 $address")
-            val reader = BufferedReader(InputStreamReader(process.inputStream))
-            var line: String?
-            val output = StringBuilder()
-            while (reader.readLine().also { line = it } != null) {
-                output.append(line).append("\n")
-            }
-            reader.close()
-            val exitValue = process.waitFor()
-            if (exitValue == 0) {
-                // Parse the IP address from the ping output
-                val regex = Regex("(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})")
-                val matchResult = regex.find(output.toString())
-                val ipAddress = matchResult?.groups?.get(0)?.value
-                validateIP(ipAddress)
-            } else {
-                false
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
+        else -> {
+            ""
         }
     }
 
-    private fun isReachableBySocket(host: String): Boolean {
-        return try {
-            val host1 = "https://$host/BNA.KT.Totem.Tab/Default.aspx?nombreEquipo=T0001SC6220"
-            val port = 443
-            val timeout = 2000 // 2 segundos
+    return sucursalServidor
+}
 
-            val socket = Socket()
-            socket.connect(InetSocketAddress(host1, port), timeout)
-            socket.close()
-            true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
+private fun validateIP(ip: String?): Boolean {
+    if (ip == null) {
+        return false
+    }
+    return ip.startsWith("10.") || ip.startsWith("172.")
+}
+
+
+private fun getPingResponse(address: String): Boolean {
+    return try {
+        val process = Runtime.getRuntime().exec("/system/bin/ping -c 1 -w 5 $address")
+        val reader = BufferedReader(InputStreamReader(process.inputStream))
+        var line: String?
+        val output = StringBuilder()
+        while (reader.readLine().also { line = it } != null) {
+            output.append(line).append("\n")
         }
-    }
-
-    fun startMainActivity(context: Context) {
-        val intent = Intent(context, MainActivity::class.java)
-        context.startActivity(intent)
-    }
-
-    fun completarConCeros(editText: String): String {
-        val textoIngresado = editText
-        val longitudActual = textoIngresado.length
-        val digitosFaltantes = 4 - longitudActual
-
-        return if (digitosFaltantes > 0) {
-            "0".repeat(digitosFaltantes) + textoIngresado
+        reader.close()
+        val exitValue = process.waitFor()
+        if (exitValue == 0) {
+            // Parse the IP address from the ping output
+            val regex = Regex("(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})")
+            val matchResult = regex.find(output.toString())
+            val ipAddress = matchResult?.groups?.get(0)?.value
+            validateIP(ipAddress)
         } else {
-            textoIngresado
+            false
         }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        false
     }
+}
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
-            //I need to do someing.
-            hideSystemUI()
+private fun isReachableBySocket(host: String): Boolean {
+    return try {
+        val host1 = "https://$host/BNA.KT.Totem.Tab/Default.aspx?nombreEquipo=T0001SC6220"
+        val port = 443
+        val timeout = 2000 // 2 segundos
+
+        val socket = Socket()
+        socket.connect(InetSocketAddress(host1, port), timeout)
+        socket.close()
+        true
+    } catch (e: Exception) {
+        e.printStackTrace()
+        false
+    }
+}
+
+fun startMainActivity(context: Context) {
+    val intent = Intent(context, MainActivity::class.java)
+    context.startActivity(intent)
+}
+
+fun completarConCeros(editText: String): String {
+    val textoIngresado = editText
+    val longitudActual = textoIngresado.length
+    val digitosFaltantes = 4 - longitudActual
+
+    return if (digitosFaltantes > 0) {
+        "0".repeat(digitosFaltantes) + textoIngresado
+    } else {
+        textoIngresado
+    }
+}
+
+override fun onWindowFocusChanged(hasFocus: Boolean) {
+    super.onWindowFocusChanged(hasFocus)
+    if (hasFocus) {
+        //I need to do someing.
+        hideSystemUI()
+    }
+}
+
+private fun hideSystemUI() {
+    val decorView = window.decorView
+    decorView.systemUiVisibility =
+        (View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_STABLE // sirve para sacar el header
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN)
+}
+
+private fun showAlertDialog(message: String) {
+    val builder = AlertDialog.Builder(this)
+    builder.setMessage(message)
+        .setPositiveButton("Aceptar") { dialog, _ ->
+            dialog.dismiss()
         }
-    }
-
-    private fun hideSystemUI() {
-        val decorView = window.decorView
-        decorView.systemUiVisibility =
-            (View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_STABLE // sirve para sacar el header
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN)
-    }
-
-    private fun showAlertDialog(message: String) {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage(message)
-            .setPositiveButton("Aceptar") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-            .show()
-    }
+        .create()
+        .show()
+}
 }
 
