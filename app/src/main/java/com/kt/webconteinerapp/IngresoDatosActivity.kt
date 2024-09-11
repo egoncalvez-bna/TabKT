@@ -231,7 +231,6 @@ class IngresoDatosActivity : AppCompatActivity() {
                 }
             }
 
-
         else -> {
             ""
         }
