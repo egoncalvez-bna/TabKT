@@ -51,8 +51,6 @@ class IngresoDatosActivity : AppCompatActivity() {
                 CAMERA_PERMISSION_REQUEST_CODE
             )
         }
-
-
         //Obtener referencia a SharedPreferences
         val preferences = getSharedPreferences("mis_preferencias", Context.MODE_PRIVATE)
 
@@ -69,11 +67,6 @@ class IngresoDatosActivity : AppCompatActivity() {
                 finish() // Opcional, dependiendo de si deseas que la actividad de ingreso de datos permanezca en la pila de actividades
             }
         }
-
-
-
-
-
         // Obtener el EditText
         val nombreDispositivoEditText: EditText = findViewById(R.id.EditTextName)
 
@@ -169,6 +162,8 @@ class IngresoDatosActivity : AppCompatActivity() {
                     val nombreServidor =
                         resolverNombreServidor(nroTablet, nroSucursal)
 
+                    val ambiente = BuildConfig.DOMAIN_SERVER_SUC
+
                     Log.d("Variables", "nombreServidor: $nroTablet")
 
                     if (nombreServidor == "ERROR") {
@@ -186,6 +181,7 @@ class IngresoDatosActivity : AppCompatActivity() {
                         // Guardar el dato con una clave específica
                         editor.putString("nombreEquipo", nombreCompleto)
                         editor.putString("nombreServidor", nombreServidor)
+                        editor.putString("ambiente", ambiente)
                         // Aplicar los cambios
                         editor.apply()
 
@@ -206,36 +202,33 @@ class IngresoDatosActivity : AppCompatActivity() {
         val sucursalServidor = when (ambiente) {
             //PRODUCCION
             "SUC" -> {
-                if (numeroSuc == "0085") {
-                    "SNL01SC0085.SUC.BNA.NET"
+                if (numeroSuc == "0001") {
+                    "DM010001.CC.BNA.NET"
                 } else {
-                        "DM01${numeroSuc}.SUC.BNA.NET"
+                    "DM01${numeroSuc}.SUC.BNA.NET"
                 }
             }
+
             //TESTING
             "TSUC" -> {
-                when (numeroSuc) {
-                    "0085" -> "TNL01SC0085.TSUC.TBNA.NET"
-                    "0064" -> "TMF02SC6021.TSUC.TBNA.NET"
-                    "0070" -> "TMF02SC6020.TSUC.TBNA.NET"
-                    else -> {
-                        "DM01${numeroSuc}.TSUC.BNA.NET"
-                    }
+                if (numeroSuc == "0001") {
+                    "DM010001.TCC.TBNA.NET"
+                } else {
+                    "DM01${numeroSuc}.TSUC.BNA.NET"
                 }
             }
+
             //DESARROLLO
             "DSUC" -> {
-//                if (numeroSuc == "0085" || numeroSuc == "6220") {
                 if (numeroSuc == "0085") {
-                    "dap13cc0001.DCC.DBNA.NET"
-                } else if (numeroSuc == "6220") {
-                    "dmf01sc6220.dsuc.dbna.net"
+                    "dm010085.dcc.dbna.net"
                 } else {
-                    "DM01${numeroSuc}.DSUC.BNA.NET"
+                    "dm01${numeroSuc}.dsuc.dbna.net"
                 }
             }
+
             else -> {
-                "ERROR"
+                ""
             }
         }
 

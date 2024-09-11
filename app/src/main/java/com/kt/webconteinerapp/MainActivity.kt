@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         val preferences = getSharedPreferences("mis_preferencias", Context.MODE_PRIVATE)
         val nombreEquipo = preferences.getString("nombreEquipo", "")
         val nombreServidor = preferences.getString("nombreServidor", "")
-        //val ambiente = preferences.getString("ambiente", "")
+        val ambiente = preferences.getString("ambiente", "")
         Log.e("DeviceInfo", "Valor guardado: $nombreEquipo")
 
         super.onCreate(savedInstanceState)
@@ -136,6 +136,7 @@ class MainActivity : AppCompatActivity() {
                         "CC\\H00097"
                     }
                 }*/
+
                 val username = BuildConfig.DOMAIN_USER+"\\"+BuildConfig.USERNAME
 
                 var password =""
@@ -175,7 +176,7 @@ class MainActivity : AppCompatActivity() {
             // Cargar el certificado desde assets
             val cf = CertificateFactory.getInstance("X.509")
 //            val caInput = resources.openRawResource(R.raw.dap13cc0001)
-            val caInput = resources.openRawResource(R.raw.dmf01sc6220)
+            val caInput = resources.openRawResource(R.raw.cabnatest01)
             val ca = caInput.use {
                 cf.generateCertificate(it)
             }
@@ -213,10 +214,12 @@ class MainActivity : AppCompatActivity() {
 
             // Lista de certificados a cargar
             val certificates = listOf(
-
-                R.raw.cabnaroottest,
-                R.raw.certrootintertest,
-                R.raw.cabnaroot
+                R.raw.cabnaprodroot,
+                R.raw.cabnaprod01,
+                R.raw.cabnaprod02,
+                R.raw.cabnatestroot,
+                R.raw.cabnatest01,
+                R.raw.cabnatest02
             )
 
             // Crear un KeyStore que contiene los CAs confiables
