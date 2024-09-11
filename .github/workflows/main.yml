@@ -3,11 +3,18 @@ name: Android CI
 on:
   push:
     branches:
-      - Test
+      - test
   pull_request:
     branches:
-      - Test
+      - test
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Specify the environment for the build'
+        required: true
+        default: 'test'
+        options:
+          - test  # Solo permite "test" como opción válida
 
 jobs:
   build-production:
