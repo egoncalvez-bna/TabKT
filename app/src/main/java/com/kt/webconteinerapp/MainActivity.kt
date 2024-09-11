@@ -62,7 +62,8 @@ class MainActivity : AppCompatActivity() {
         val preferences = getSharedPreferences("mis_preferencias", Context.MODE_PRIVATE)
         val nombreEquipo = preferences.getString("nombreEquipo", "")
         val nombreServidor = preferences.getString("nombreServidor", "")
-        //val ambiente = preferences.getString("ambiente", "")
+        val ambiente = preferences.getString("ambiente", "")
+        val numeroSucursal = preferences.getString("numeroSucursal", "")
         Log.e("DeviceInfo", "Valor guardado: $nombreEquipo")
 
         super.onCreate(savedInstanceState)
@@ -106,7 +107,7 @@ class MainActivity : AppCompatActivity() {
 
         var pass = BuildConfig.PASSWORD
         Log.e("PasswordContent", "La contraseña es: $pass")
-        var user = BuildConfig.DOMAIN_USER+"\\"+BuildConfig.USERNAME
+        var user = BuildConfig.DOMAIN_USER + "\\" + BuildConfig.USERNAME
         Log.e("PasswordContent", "$user")
         var p = BuildConfig.DOMAIN_SERVER_SUC
         Log.e("PasswordContent", "$p")
@@ -127,18 +128,19 @@ class MainActivity : AppCompatActivity() {
                 host: String,
                 realm: String
             ) {
-/*                val username = when (ambiente) {
-                    "Producción" -> "CC\\H00097"
-                    "Testing" -> "TCC\\H00097"
-                    "Desarrollo" -> "DCC\\H00097"
-
-                    else -> {
-                        "CC\\H00097"
-                    }
+                /*val username = when (ambiente) {
+                  "Producción" -> "CC\\H00097"
+                  "Testing" -> "TCC\\H00097"
+                  "Desarrollo" -> "DCC\\H00097"
+                 else -> {
+                "CC\\H00097"
+                }
                 }*/
-                val username = BuildConfig.DOMAIN_USER+"\\"+BuildConfig.USERNAME
 
-                var password =""
+                val username =
+                    BuildConfig.DOMAIN_USER + "\\" + BuildConfig.USERNAME + numeroSucursal
+
+                var password = ""
                 try {
                     val crypto = CryptoProvider.getProvider().simCrypto
                     password = crypto.desencriptar(pass)
@@ -156,12 +158,12 @@ class MainActivity : AppCompatActivity() {
         myWebView.setOnTouchListener { _, event -> event.actionMasked == MotionEvent.ACTION_MOVE }
     }
 
-    fun sendError(error:String)
-    {
+    fun sendError(error: String) {
         val intent = Intent(this, ErroresActivity::class.java)
         intent.putExtra("EXTRA_TEXT", error)
         startActivity(intent)
     }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
@@ -175,7 +177,7 @@ class MainActivity : AppCompatActivity() {
             // Cargar el certificado desde assets
             val cf = CertificateFactory.getInstance("X.509")
 //            val caInput = resources.openRawResource(R.raw.dap13cc0001)
-            val caInput = resources.openRawResource(R.raw.dmf01sc6220)
+            val caInput = resources.openRawResource(R.raw.cabnatest01)
             val ca = caInput.use {
                 cf.generateCertificate(it)
             }
@@ -213,10 +215,12 @@ class MainActivity : AppCompatActivity() {
 
             // Lista de certificados a cargar
             val certificates = listOf(
-
-                R.raw.cabnaroottest,
-                R.raw.certrootintertest,
-                R.raw.cabnaroot
+                R.raw.cabnaprodroot,
+                R.raw.cabnaprod01,
+                R.raw.cabnaprod02,
+                R.raw.cabnatestroot,
+                R.raw.cabnatest01,
+                R.raw.cabnatest02
             )
 
             // Crear un KeyStore que contiene los CAs confiables
