@@ -61,8 +61,9 @@ class IngresoDatosActivity : AppCompatActivity() {
         ) // Se utiliza un valor predeterminado vacío si no se encuentra ningún valor guardado
         val nombreServidor = preferences.getString("nombreServidor", "")
         val ambiente = preferences.getString("ambiente", "")
-        if (nombreEquipo != null && nombreServidor != null && ambiente != null) {
-            if (nombreEquipo.isNotEmpty() && nombreServidor.isNotEmpty() && ambiente.isNotEmpty()) {
+        val numeroSucursal = preferences.getString("numeroSucursal", "")
+        if (nombreEquipo != null && nombreServidor != null && ambiente != null && numeroSucursal != null) {
+            if (nombreEquipo.isNotEmpty() && nombreServidor.isNotEmpty() && ambiente.isNotEmpty() && numeroSucursal.isNotEmpty()) {
                 startMainActivity(this)
                 finish() // Opcional, dependiendo de si deseas que la actividad de ingreso de datos permanezca en la pila de actividades
             }
@@ -182,6 +183,7 @@ class IngresoDatosActivity : AppCompatActivity() {
                         editor.putString("nombreEquipo", nombreCompleto)
                         editor.putString("nombreServidor", nombreServidor)
                         editor.putString("ambiente", ambiente)
+                        editor.putString("numeroSucursal", nroSucursal)
                         // Aplicar los cambios
                         editor.apply()
 
