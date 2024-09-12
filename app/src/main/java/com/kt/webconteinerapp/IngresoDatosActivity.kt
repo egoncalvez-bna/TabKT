@@ -216,7 +216,7 @@ class IngresoDatosActivity : AppCompatActivity() {
                 if (numeroSuc == "0001") {
                     "DM010001.TCC.TBNA.NET"
                 } else {
-                    "DM01${numeroSuc}.TSUC.BNA.NET"
+                    "DM01${numeroSuc}.TSUC.TBNA.NET"
                 }
             }
 
