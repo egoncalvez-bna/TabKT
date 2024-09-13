@@ -89,21 +89,8 @@ class MainActivity : AppCompatActivity() {
                 request.grant(request.resources)
             }
         }
-
         // Configurar el certificado SSL
         configureSsl(myWebView)
-
-        // Prueba de implementación de BNA cripto:
-        /*   val pass = when (ambiente) {
-               "Producción" -> ""
-               "Testing" -> "+GFwS5Wg1Q54A1kyEONCpg=="
-               "Desarrollo" -> "ep+OHJBHisF4A1kyEONCpg=="
-
-               else -> {
-                   "ERROR"
-               }
-           }
-           {}*/
 
         var pass = BuildConfig.PASSWORD
         Log.e("PasswordContent", "La contraseña es: $pass")
@@ -115,10 +102,7 @@ class MainActivity : AppCompatActivity() {
         if (pass.isNullOrEmpty()) {
             // Manejar el caso en el que la contraseña es nula o vacía
             Log.e("PasswordError", "La contraseña no está definida en BuildConfig.")
-            val intent = Intent(this, ErroresActivity::class.java)
-            intent.putExtra("EXTRA_TEXT", "Error: la contraseña es nula o vacía")
-            startActivity(intent)
-            return // Detener la ejecución si la contraseña no es válida
+            sendError("La contraseña no está definida en BuildConfig.")
         }
 
         myWebView.setWebViewClient(object : MyWebViewClient(progressBar) {
@@ -128,18 +112,13 @@ class MainActivity : AppCompatActivity() {
                 host: String,
                 realm: String
             ) {
-                /*val username = when (ambiente) {
-                  "Producción" -> "CC\\H00097"
-                  "Testing" -> "TCC\\H00097"
-                  "Desarrollo" -> "DCC\\H00097"
-                 else -> {
-                "CC\\H00097"
-                }
-                }*/
-
-                val username =
+                var username =
                     BuildConfig.DOMAIN_USER + "\\" + BuildConfig.USERNAME + numeroSucursal
 
+                if (ambiente == "DSUC" && numeroSucursal == "0085") {
+                    username =
+                        BuildConfig.DOMAIN_USER + "\\" + BuildConfig.USERNAME + "0074"
+                }
                 var password = ""
                 try {
                     val crypto = CryptoProvider.getProvider().simCrypto
@@ -150,60 +129,27 @@ class MainActivity : AppCompatActivity() {
                 handler.proceed(username, password)
             }
         })
-
-        val url = "https://$nombreServidor/BNA.KT.Totem.Tab/Default.aspx?nombreEquipo=$nombreEquipo"
+        val versionName = BuildConfig.VERSION_NAME
+        val url =
+            "https://$nombreServidor/BNA.KT.Totem.Tab/Default.aspx?nombreEquipo=$nombreEquipo&apkVersion=V$versionName"
         myWebView.loadUrl(url)
 
         // Desactiva el movimiento en los márgenes
         myWebView.setOnTouchListener { _, event -> event.actionMasked == MotionEvent.ACTION_MOVE }
     }
 
+
     fun sendError(error: String) {
         val intent = Intent(this, ErroresActivity::class.java)
         intent.putExtra("EXTRA_TEXT", error)
         startActivity(intent)
+        return
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             hideSystemUI()
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun configureSslOld(webView: WebView) {
-        try {
-            // Cargar el certificado desde assets
-            val cf = CertificateFactory.getInstance("X.509")
-//            val caInput = resources.openRawResource(R.raw.dap13cc0001)
-            val caInput = resources.openRawResource(R.raw.cabnatest01)
-            val ca = caInput.use {
-                cf.generateCertificate(it)
-            }
-
-            // Crear un KeyStore que contiene el CA confiable
-            val keyStoreType = KeyStore.getDefaultType()
-            val keyStore = KeyStore.getInstance(keyStoreType).apply {
-                load(null, null)
-                setCertificateEntry("ca", ca)
-            }
-
-            // Crear un TrustManager que confía en el CA en nuestro KeyStore
-            val tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm()
-            val tmf = TrustManagerFactory.getInstance(tmfAlgorithm).apply {
-                init(keyStore)
-            }
-
-            // Crear un SSLContext que usa nuestro TrustManager
-            val sslContext = SSLContext.getInstance("TLS").apply {
-                init(null, tmf.trustManagers, null)
-            }
-
-            val sslSocketFactory = sslContext.socketFactory
-            (webView.webViewClient as MyWebViewClient).sslSocketFactory = sslSocketFactory
-        } catch (e: Exception) {
-            Log.e("SSLConfig", "Error configuring SSL", e)
         }
     }
 
@@ -300,12 +246,7 @@ class MainActivity : AppCompatActivity() {
                 val description = it.description.toString()
                 Log.e("WebViewError", "Error $errorCode: $description")
 
-                // Crear Intent para iniciar SecondActivity
-                val intent = Intent(this@MainActivity, ErroresActivity::class.java)
-                // Agregar el texto como un
-                intent.putExtra("EXTRA_TEXT", "Error $errorCode: $description")
-                // Iniciar SecondActivity
-                startActivity(intent)
+                sendError("WV Error: $errorCode: $description")
 
                 if (description.contains("net::ERR_CONNECTION_TIMED_OUT")) {
                     Log.e("WebViewError", "Error de tiempo de conexión agotado.")
@@ -322,13 +263,7 @@ class MainActivity : AppCompatActivity() {
             handler?.cancel()
 
             Log.e("WebViewClientError", "SSL Error: ${error?.primaryError}")
-            // Crear Intent para iniciar SecondActivity
-            val intent = Intent(this@MainActivity, ErroresActivity::class.java)
-            // Agregar el texto como un
-            intent.putExtra("EXTRA_TEXT", "SSL Error: ${error?.primaryError}")
-            // Iniciar SecondActivity
-            startActivity(intent)
+            sendError("SSL Error: ${error?.primaryError}")
         }
-//
     }
 }

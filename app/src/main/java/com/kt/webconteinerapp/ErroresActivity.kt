@@ -27,6 +27,12 @@ class ErroresActivity : AppCompatActivity() {
         val nombreEquipo = preferences.getString("nombreEquipo", "")
         val nombreServidor = preferences.getString("nombreServidor", "")
 
+        // Obtén el TextView
+        val versionNameTextView: TextView = findViewById(R.id.versionNameTextView)
+
+        // Establece el versionName usando BuildConfig
+        val versionName = BuildConfig.VERSION_NAME
+        versionNameTextView.text = "V$versionName"
 
         // Recuperar el Intent que inició esta actividad
         val intent = intent
