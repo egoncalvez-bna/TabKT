@@ -5,15 +5,15 @@ plugins {
 
 android {
     namespace 'com.kt.webconteinerapp'
-    compileSdk 33
+    compileSdk 33--
 
     defaultConfig {
         //applicationId 'com.kt.webconteinerapp'
         applicationId = System.getenv("APPLICATION_ID") ?: "com.kt.webconteinerapp"
         minSdk 21
         targetSdk 33
-        versionCode 3
-        versionName '3.0'
+        versionCode 4
+        versionName '4.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "USERNAME", "\"${System.getenv('SERVICE_USERNAME')?.replace("\"", "\\\"") ?: ""}\""

@@ -68,6 +68,14 @@ class IngresoDatosActivity : AppCompatActivity() {
                 finish() // Opcional, dependiendo de si deseas que la actividad de ingreso de datos permanezca en la pila de actividades
             }
         }
+
+        // Obtén el TextView
+        val versionNameTextView: TextView = findViewById(R.id.versionNameTextView)
+
+        // Establece el versionName usando BuildConfig
+        val versionName = BuildConfig.VERSION_NAME
+        versionNameTextView.text = "V$versionName"
+
         // Obtener el EditText
         val nombreDispositivoEditText: EditText = findViewById(R.id.EditTextName)
 
