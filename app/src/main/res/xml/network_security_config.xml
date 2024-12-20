@@ -11,6 +11,9 @@
         <certificates src="@raw/cabnatest01" />
         <certificates src="@raw/cabnatest02" />
         <certificates src="@raw/cabnatestroot" />
+        <certificates src="@raw/cabnaprod01" />
+        <certificates src="@raw/cabnaprod02" />
+        <certificates src="@raw/cabnaprodroot" />
     </trust-anchors>
 </domain-config>
 </network-security-config>

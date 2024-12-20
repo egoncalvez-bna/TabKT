@@ -213,18 +213,18 @@ class IngresoDatosActivity : AppCompatActivity() {
             //PRODUCCION
             "SUC" -> {
                 if (numeroSuc == "0001") {
-                    "DM010001.CC.BNA.NET"
+                    "dm010001.cc.bna.net"
                 } else {
-                    "DM01${numeroSuc}.SUC.BNA.NET"
+                    "dm01${numeroSuc}.suc.bna.net"
                 }
             }
 
             //TESTING
             "TSUC" -> {
                 if (numeroSuc == "0001") {
-                    "DM010001.TCC.TBNA.NET"
+                    "dm010001.tcc.tbna.net"
                 } else {
-                    "DM01${numeroSuc}.TSUC.TBNA.NET"
+                    "dm01${numeroSuc}.tsuc.tbna.net"
                 }
             }
 
