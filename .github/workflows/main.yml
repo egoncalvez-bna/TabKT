@@ -63,7 +63,7 @@ jobs:
   
       # 5. Configurar permisos para apksigner si es necesario
       - name: Set Permissions for apksigner
-        run: chmod +x /usr/local/lib/android/sdk/build-tools/33.0.3/apksigner
+        run: chmod +x /usr/local/lib/android/sdk/build-tools/35.0.0/apksigner
       - name: Verify apksigner
         run: which apksigner || echo "apksigner not found"
 
@@ -108,18 +108,18 @@ jobs:
             echo "Found file: $file"
           done
 
-      - name: Sign the APK
+      - name: Sign APK
         run: |
-          $ANDROID_SDK_ROOT/build-tools/33.0.3/apksigner sign \
+          $ANDROID_SDK_ROOT/build-tools/35.0.0/apksigner sign \
           --ks TabKT1.jks \
-          --ks-pass pass:${{ env.SIGNING_STORE_PASSWORD }} \
-          --key-pass pass:${{ env.SIGNING_KEY_PASSWORD }} \
-          --out app/build/outputs/apk/release/${{ env.APK_NAME }} \
+          --ks-pass pass:${{ secrets.SIGNING_STORE_PASSWORD }} \
+          --key-pass pass:${{ secrets.SIGNING_KEY_PASSWORD }} \
+          --out app/build/outputs/apk/release/Totem-KT-P.apk \
           app/build/outputs/apk/release/app-release-unsigned.apk
 
       - name: Verify APK Signature
         run: |
-          $ANDROID_SDK_ROOT/build-tools/33.0.3/apksigner verify \
+          $ANDROID_SDK_ROOT/build-tools/35.0.0/apksigner verify \
           app/build/outputs/apk/release/${{ env.APK_NAME }}
 
       - name: Upload build artifacts
