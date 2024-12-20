@@ -60,12 +60,7 @@ jobs:
         run: |
           echo "Searching for apksigner:"
           find /usr/local/lib/android/sdk -name apksigner
-  
-      # 5. Configurar permisos para apksigner si es necesario
-      - name: Set Permissions for apksigner
-        run: chmod +x /usr/local/lib/android/sdk/build-tools/35.0.0/apksigner
-      - name: Verify apksigner
-        run: which apksigner || echo "apksigner not found"
+
 
       - name: Set up environment variables for production build
         run: |
