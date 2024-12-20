@@ -49,7 +49,21 @@ jobs:
         run: |
           echo "ANDROID_SDK_ROOT is set to: $ANDROID_SDK_ROOT"
           ls -R $ANDROID_SDK_ROOT
-
+      # 3. Debug Android Build Tools (listar herramientas instaladas)
+      - name: Debug Android Build Tools
+        run: |
+          echo "Listing build-tools directory:"
+          ls -R /usr/local/lib/android/sdk/build-tools/
+  
+      # 4. Verificar la disponibilidad de apksigner
+      - name: Verify apksigner
+        run: |
+          echo "Searching for apksigner:"
+          find /usr/local/lib/android/sdk -name apksigner
+  
+      # 5. Configurar permisos para apksigner si es necesario
+      - name: Set Permissions for apksigner
+        run: chmod +x /usr/local/lib/android/sdk/build-tools/33.0.3/apksigner
       - name: Verify apksigner
         run: which apksigner || echo "apksigner not found"
 
