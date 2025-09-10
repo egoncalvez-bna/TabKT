@@ -130,7 +130,7 @@ jobs:
           done
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: production-apk
           path: app/build/outputs/apk/release/${{ env.APK_NAME }}
@@ -218,7 +218,7 @@ jobs:
           $ANDROID_SDK_ROOT/build-tools/35.0.0/apksigner verify app/build/outputs/apk/release/${{ env.APK_NAME }}
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: testing-apk
           path: app/build/outputs/apk/release/${{ env.APK_NAME }}
@@ -305,7 +305,7 @@ jobs:
           $ANDROID_SDK_ROOT/build-tools/35.0.0/apksigner verify app/build/outputs/apk/release/${{ env.APK_NAME }}
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: development-apk
           path: app/build/outputs/apk/release/${{ env.APK_NAME }}
