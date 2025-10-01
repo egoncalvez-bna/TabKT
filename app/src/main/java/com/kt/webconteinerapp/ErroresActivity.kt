@@ -5,20 +5,20 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.InputType
-import android.text.TextWatcher
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
-
 import android.widget.Button
-import android.widget.EditText
-
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 
 class ErroresActivity : AppCompatActivity() {
+    // AGREGAR TIMEOUT PARA BOTÓN DE REINTENTAR
+    private var lastRetryTime = 0L
+    private val retryTimeout = 5000L // 5 segundos entre reintentos
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pagina_error)
@@ -50,10 +50,31 @@ class ErroresActivity : AppCompatActivity() {
         val buttonReintentar = findViewById<Button>(R.id.ButtonReintentar)
 
         buttonReintentar.setOnClickListener {
-
-            // Lanzar la actividad principal
-            startMainActivity(this)
-            finish() // Opcional, dependiendo de si deseas que la actividad de ingreso de datos permanezca en la pila de actividades
+            val currentTime = System.currentTimeMillis()
+            
+            // Verificar si ha pasado suficiente tiempo desde el último intento
+            if (currentTime - lastRetryTime >= retryTimeout) {
+                lastRetryTime = currentTime
+                
+                Log.d("ErroresActivity", "Reintentando conexión...")
+                
+                // Deshabilitar botón temporalmente para evitar clicks múltiples
+                buttonReintentar.isEnabled = false
+                buttonReintentar.text = "Reintentando..."
+                
+                // Habilitar botón después del timeout
+                Handler(Looper.getMainLooper()).postDelayed({
+                    buttonReintentar.isEnabled = true
+                    buttonReintentar.text = "Reintentar"
+                }, retryTimeout)
+                
+                // Lanzar la actividad principal
+                startMainActivity(this)
+                finish()
+            } else {
+                val remainingTime = (retryTimeout - (currentTime - lastRetryTime)) / 1000
+                Log.w("ErroresActivity", "Debe esperar $remainingTime segundos antes de reintentar")
+            }
         }
 
     }
