@@ -34,16 +34,14 @@
             android:name=".MainActivity"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name=".IngresoDatosActivity"
             android:exported="true"
             android:hardwareAccelerated="true"
-            android:screenOrientation="landscape"
-            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,8 +51,8 @@
         <activity 
             android:name=".ErroresActivity"
             android:hardwareAccelerated="true"
-            android:screenOrientation="landscape"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>
