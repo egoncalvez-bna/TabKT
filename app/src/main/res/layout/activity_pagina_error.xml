@@ -90,16 +90,34 @@
             android:textSize="15pt" />
 
 
-        <Button
-            android:id="@+id/ButtonReintentar"
+        <FrameLayout
+            android:id="@+id/retryButtonContainer"
             android:layout_width="316dp"
             android:layout_height="112dp"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:background="#d9b38a"
-            android:gravity="center"
-            android:text="REINTENTAR"
-            android:textSize="30dp" />
+            android:layout_marginTop="40dp">
+
+            <Button
+                android:id="@+id/ButtonReintentar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#d9b38a"
+                android:gravity="center"
+                android:text="REINTENTAR"
+                android:textSize="30dp"
+                android:textColor="#FFFFFF" />
+
+            <ProgressBar
+                android:id="@+id/retryProgress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone"
+                android:indeterminateTint="#000000" />
+        </FrameLayout>
+
 
     </LinearLayout>
 

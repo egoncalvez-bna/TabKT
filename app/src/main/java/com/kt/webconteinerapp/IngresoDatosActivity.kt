@@ -21,14 +21,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.text.DecimalFormat
 import androidx.appcompat.app.AlertDialog
-import java.net.HttpURLConnection
-import java.net.InetSocketAddress
-import java.net.Socket
-import java.net.URL
 
 class IngresoDatosActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
@@ -247,58 +241,13 @@ class IngresoDatosActivity : AppCompatActivity() {
     return sucursalServidor
 }
 
-private fun validateIP(ip: String?): Boolean {
-    if (ip == null) {
-        return false
-    }
-    return ip.startsWith("10.") || ip.startsWith("172.")
-}
-
-
-private fun getPingResponse(address: String): Boolean {
-    return try {
-        val process = Runtime.getRuntime().exec("/system/bin/ping -c 1 -w 5 $address")
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        var line: String?
-        val output = StringBuilder()
-        while (reader.readLine().also { line = it } != null) {
-            output.append(line).append("\n")
-        }
-        reader.close()
-        val exitValue = process.waitFor()
-        if (exitValue == 0) {
-            // Parse the IP address from the ping output
-            val regex = Regex("(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})")
-            val matchResult = regex.find(output.toString())
-            val ipAddress = matchResult?.groups?.get(0)?.value
-            validateIP(ipAddress)
-        } else {
-            false
-        }
-    } catch (e: Exception) {
-        e.printStackTrace()
-        false
-    }
-}
-
-private fun isReachableBySocket(host: String): Boolean {
-    return try {
-        val host1 = "https://$host/BNA.KT.Totem.Tab/Default.aspx?nombreEquipo=T0001SC6220"
-        val port = 443
-        val timeout = 2000 // 2 segundos
-
-        val socket = Socket()
-        socket.connect(InetSocketAddress(host1, port), timeout)
-        socket.close()
-        true
-    } catch (e: Exception) {
-        e.printStackTrace()
-        false
-    }
-}
+// FUNCIONES PROBLEMÁTICAS REMOVIDAS PARA TOTEM
+// Se eliminaron validateIP, getPingResponse e isReachableBySocket
+// para evitar bloqueos y mejorar la estabilidad del TOTEM
 
 fun startMainActivity(context: Context) {
     val intent = Intent(context, MainActivity::class.java)
+    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
     context.startActivity(intent)
 }
 
