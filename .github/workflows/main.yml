@@ -59,8 +59,8 @@ jobs:
           echo "DOMAIN_USER=${{ vars.DOMAIN_USER_PROD }}" >> $GITHUB_ENV
           echo "SERVICE_USERNAME=${{ vars.SERVICE_USERNAME_PROD }}" >> $GITHUB_ENV
           echo "PASSWORD=${{ secrets.PASSWORD_PROD }}" >> $GITHUB_ENV
-          echo "APK_NAME=Totem-KT-P.apk" >> $GITHUB_ENV
-          echo "APPLICATION_ID=com.kt.totem.kt.app.P" >> $GITHUB_ENV
+          echo "APK_NAME=Totem-KT-P2.apk" >> $GITHUB_ENV
+          echo "APPLICATION_ID=com.kt.totem.kt.app.P2" >> $GITHUB_ENV
 
       - name: Prepare JKS for signing
         run: |
